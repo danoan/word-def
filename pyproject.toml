@@ -20,7 +20,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["beautifulsoup4", "collins-dictionary-api-client @ file:///home/daniel/Projects/Git/collins-dictionary-api-client"]
+dependencies = ["beautifulsoup4"]
 
 [project.urls]
 Documentation = "https://github.com/danoan/word-def#readme"

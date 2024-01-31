@@ -2,19 +2,24 @@ import importlib
 import pkgutil
 from typing import Any, List
 
+plugin_register = {}
+
 
 def register_plugins():
-    # Taverse the modules contained in
-    # the plugins namespace call the
-    # function get_language of each of them
-    # and register the module names in a dictionary.
-    # I would like to call get_language without having
-    # to import the module. Or, at least, call it once,
-    # drop it from memory and then create a LazyLoader for it.
-    pass
+    # TODO: Consider using LazyLoader
+    prefix = "danoan.word_def.plugins.modules"
+    plugins_module = importlib.import_module(prefix)
+    for module_info in pkgutil.iter_modules(plugins_module.__path__, prefix=f"{prefix}."):
+        print(module_info)
+        module = importlib.import_module(module_info.name)
+        factory = module.AdapterFactory()
+        plugin_register[factory.get_language()] = factory.get_adapter
 
 
 def get_adapter(language_code: str) -> List[Any]:
+    # TODO: Display a message if someone tries do get an adapter
+    # but there is nothing in plugins.modules (needs to install at
+    # least one plugin package)
     # This will access the plugins register and pick
     # the proper adapter.
     prefix = "danoan.word_def.plugins"
