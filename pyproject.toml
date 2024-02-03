@@ -28,7 +28,7 @@ Issues = "https://github.com/danoan/word-def"
 Source = "https://github.com/danoan/word-def"
 
 [project.scripts]
-word-def = "danoan.word_def.cli:main"
+word-def = "danoan.word_def.cli.cli:main"
 
 # -------------------- build backend --------------------
 [tool.setuptools.packages.find]
