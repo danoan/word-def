@@ -1,3 +1,13 @@
+class UnexpectedResponseError(Exception):
+    def __init__(self, status_code: int, message: str):
+        self.status_code = status_code
+        self.message = message
+
+
+class ConfigurationFileRequiredError(Exception):
+    pass
+
+
 class PluginNotAvailableError(Exception):
     pass
 

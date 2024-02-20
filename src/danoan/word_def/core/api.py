@@ -2,7 +2,6 @@ from danoan.word_def.core import exception, model
 
 from functools import wraps
 import importlib
-from pathlib import Path
 import pkgutil
 from typing import Callable, Dict, List, Optional, TextIO
 
