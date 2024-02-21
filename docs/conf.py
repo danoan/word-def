@@ -38,6 +38,7 @@ extensions = [
     "sphinx.ext.viewcode",  # Source code link at function, class, module documentation
     "sphinx_rtd_theme",  # Read the docs theme,
     "myst_parser",  # Markdown flavour. Allow type-hints constructions.
+    "sphinxcontrib.mermaid",  # Mermaid diagrams.
 ]
 
 source_suffix = {
