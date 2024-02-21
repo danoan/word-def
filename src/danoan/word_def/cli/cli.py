@@ -1,15 +1,17 @@
-from danoan.word_def.cli.commands import get_definition
+from danoan.word_def.cli.commands import get_definition, get_pos_tag
 
 import argparse
 
 
 def main():
     parser = argparse.ArgumentParser("Get word definitions and more.")
-    parser.add_argument("--plugin-configuration-filepath",
-                        help="toml file with configuration settings for word-def plugins.")
+    parser.add_argument(
+        "--plugin-configuration-filepath",
+        help="toml file with configuration settings for word-def plugins.",
+    )
 
     subparser_action = parser.add_subparsers()
-    list_of_commands = [get_definition]
+    list_of_commands = [get_definition, get_pos_tag]
     for command in list_of_commands:
         command.extend_parser(subparser_action)
 

@@ -37,7 +37,9 @@ class _PluginRegister:
         # TODO: Consider using LazyLoader
         prefix = "danoan.word_def.plugins.modules"
         plugins_module = importlib.import_module(prefix)
-        for module_info in pkgutil.iter_modules(plugins_module.__path__, prefix=f"{prefix}."):
+        for module_info in pkgutil.iter_modules(
+            plugins_module.__path__, prefix=f"{prefix}."
+        ):
             yield importlib.import_module(module_info.name), module_info.name
 
     def get_language_plugins(self, language_code: str) -> List[model.Plugin]:
@@ -105,8 +107,11 @@ def _check_missing_implementation(method_name: str):
                 return api_function(*args, **kwargs)
             except AttributeError as ex:
                 raise exception.PluginMethodNotImplementedError(
-                    method_name=method_name) from ex
+                    method_name=method_name
+                ) from ex
+
         return wrapper
+
     return inner
 
 
@@ -117,7 +122,12 @@ get_register = _get_register()
 
 
 @_check_missing_implementation("get_definition")
-def get_definition(word: str, language_code: str, plugin_name: Optional[str] = None, configuration_stream: Optional[TextIO] = None) -> List[str]:
+def get_definition(
+    word: str,
+    language_code: str,
+    plugin_name: Optional[str] = None,
+    configuration_stream: Optional[TextIO] = None,
+) -> List[str]:
     """
     Get a list of definitions for the given word in the given language.
     """
@@ -126,8 +136,28 @@ def get_definition(word: str, language_code: str, plugin_name: Optional[str] = N
     return adapter.get_definition(word)
 
 
+@_check_missing_implementation("get_pos_tag")
+def get_pos_tag(
+    word: str,
+    language_code: str,
+    plugin_name: Optional[str] = None,
+    configuration_stream: Optional[TextIO] = None,
+):
+    """
+    Get a list of part-of-speech tags for the given word in the given language.
+    """
+    plugin = _get_plugin(language_code, plugin_name)
+    adapter = plugin.adapter_factory.get_adapter(configuration_stream)
+    return adapter.get_pos_tag(word)
+
+
 @_check_missing_implementation("get_synonyme")
-def get_synonyme(word: str, language_code: str, plugin_name: Optional[str] = None, configuration_stream: Optional[TextIO] = None):
+def get_synonyme(
+    word: str,
+    language_code: str,
+    plugin_name: Optional[str] = None,
+    configuration_stream: Optional[TextIO] = None,
+):
     """
     Get a list of synonymes to the given word in the given language.
     """
@@ -137,7 +167,12 @@ def get_synonyme(word: str, language_code: str, plugin_name: Optional[str] = Non
 
 
 @_check_missing_implementation("get_usage_examples")
-def get_usage_examples(word: str, language_code: str, plugin_name: Optional[str] = None, configuration_stream: Optional[TextIO] = None):
+def get_usage_examples(
+    word: str,
+    language_code: str,
+    plugin_name: Optional[str] = None,
+    configuration_stream: Optional[TextIO] = None,
+):
     """
     Get a list of examples in which the given word is employed.
     """
