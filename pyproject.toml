@@ -46,7 +46,7 @@ minversion = "6.0"
 addopts = "--cov --strict-markers"
 xfail_strict = true
 testpaths = [
-    "tests"
+    "test"
 ]
 pythonpath = [
 "test" # Needed in order to import conftest.py in test modules

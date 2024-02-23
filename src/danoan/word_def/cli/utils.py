@@ -1,4 +1,4 @@
-from danoan.word_def.core import api
+from danoan.word_def.core import api, exception
 
 import io
 from pathlib import Path
@@ -48,12 +48,14 @@ def pluging_not_available_error_message(language_code: str) -> str:
     )
 
 
-def plugin_method_not_implemented_error_message(ex: Exception) -> str:
+def plugin_method_not_implemented_error_message(
+    ex: exception.PluginMethodNotImplementedError,
+) -> str:
     return dedent(
         f"""
-            The method {ex.method_name} is not implemented for the requested language plugin.
-            Make sure that you have a updated version installed.
-            """
+        The method {ex.method_name} is not implemented for the requested language plugin.
+        Make sure that you have a updated version installed.
+        """
     )
 
 

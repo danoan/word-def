@@ -41,7 +41,7 @@ def __get_definition__(
 def extend_parser(subparser_action=None):
     command = "get-definition"
     description = __get_definition__.__doc__
-    help = description.split(".")[0]
+    help = description.split(".")[0] if description else ""
 
     if subparser_action:
         parser = subparser_action.add_parser(

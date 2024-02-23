@@ -39,7 +39,7 @@ def __get_pos_tag__(
 def extend_parser(subparser_action=None):
     command = "get-pos-tag"
     description = __get_pos_tag__.__doc__
-    help = description.split(".")[0]
+    help = description.split(".")[0] if description else ""
 
     if subparser_action:
         parser = subparser_action.add_parser(
