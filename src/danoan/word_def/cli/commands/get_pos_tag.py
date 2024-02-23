@@ -1,9 +1,8 @@
 from danoan.word_def.core import api, exception
+from danoan.word_def.cli import utils
 
 import argparse
-import io
 from pathlib import Path
-import toml
 from typing import Optional
 
 
@@ -16,45 +15,22 @@ def __get_pos_tag__(
     **kwargs,
 ):
     """
-    Get pqrt-of-speecj tags of a given word.
+    Get part-of-speech tags of a given word.
     """
     if plugin_name is None:
-        register = api.get_register()
-        if language_code not in register.languages_available:
-            print(f"No plugin registered for language `{language_code}`.")
-            exit(1)
+        plugin_name = utils.get_plugin_name(language_code)
 
-        plugin_name = api.get_register().plugin_register[language_code][0].package_name
-
-    plugin_config = toml.load(plugin_configuration_filepath)
-    if plugin_name not in plugin_config:
-        print(f"There is no `{plugin_name}` in the plugin configuration file. Exiting.")
-        exit(1)
-
-    plugin_configuration_dict = plugin_config[plugin_name]
-    ss = io.StringIO()
-    toml.dump(plugin_configuration_dict, ss)
-    ss.seek(0)
+    ss = utils.get_configuration_stream(plugin_name, plugin_configuration_filepath)
 
     list_of_pos_tags = []
     try:
         list_of_pos_tags = api.get_pos_tag(word, language_code, configuration_stream=ss)
+    except exception.ConfigurationFileRequiredError:
+        print(utils.configuration_file_required_error_message())
     except exception.PluginNotAvailableError:
-        print(
-            f"""
-            There is no plugin available for the language with code `{language_code}`.
-            Make sure that you have installed the plugin package (e.g.
-            word-def-plugin-english-collins) and that you have the correct language code.
-            It should be the three letter ISO 639-2 code (e.g. `eng`)
-            """
-        )
+        print(utils.pluging_not_available_error_message(language_code))
     except exception.PluginMethodNotImplementedError as ex:
-        print(
-            f"""
-            The method {ex.method_name} is not implemented for the requested language plugin.
-            Make sure that you have a updated version installed.
-            """
-        )
+        print(utils.plugin_method_not_implemented_error_message(ex))
     else:
         for i, pos_tag in enumerate(list_of_pos_tags, 1):
             print(f"{i}. {pos_tag}")
