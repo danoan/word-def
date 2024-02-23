@@ -1,3 +1,8 @@
+"""
+Exceptions raised by API.
+"""
+
+
 class UnexpectedResponseError(Exception):
     def __init__(self, status_code: int, message: str):
         self.status_code = status_code
@@ -18,3 +23,7 @@ class PluginMethodNotImplementedError(Exception):
 
     def __str__(self):
         return f"The method `{self.method_name}` is not implemented in this version of the plugin. Consider updating it to a different version."
+
+
+class UnrecognizedPluginModule(Exception):
+    pass

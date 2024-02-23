@@ -1,9 +1,19 @@
+"""
+Public API.
+"""
+
 from danoan.word_def.core import exception, model
 
 from functools import wraps
 import importlib
+import logging
 import pkgutil
+import sys
 from typing import Callable, Dict, List, Optional, TextIO
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler(sys.stdout))
 
 T_Register = Dict[str, List[model.Plugin]]
 
@@ -21,8 +31,16 @@ class _PluginRegister:
         self.languages_available = set()
 
         for module, module_name in self._collect_plugin_modules():
-            factory = module.AdapterFactory()
+            try:
+                factory = module.AdapterFactory()
+            except AttributeError:
+                logger.info(
+                    f"The module {module_name} does not seem to have an AdapterFactory function and thus cannot be registered as a plugin. Skipping it."
+                )
+                continue
+
             plugin = model.Plugin(module_name, factory)
+
             language = factory.get_language()
             if language not in self.plugin_register:
                 self.plugin_register[language] = []
@@ -52,13 +70,16 @@ class _PluginRegister:
         return self.plugin_register[language_code]
 
 
-def _get_register() -> Callable[[], _PluginRegister]:
+def _get_register() -> Callable[[], "PluginRegister"]:
     register = None
 
-    def get_register() -> _PluginRegister:
+    def get_register() -> PluginRegister:
+        """
+        Get public proxy do _PluginRegister.
+        """
         nonlocal register
         if register is None:
-            register = _PluginRegister()
+            register = PluginRegister(_PluginRegister())
         return register
 
     return get_register
@@ -83,6 +104,14 @@ def _get_plugin_by_name(language_code: str, name: str) -> Optional[model.Plugin]
 
 def _get_plugin(language_code: str, plugin_name: Optional[str] = None) -> model.Plugin:
     """
+    Get the most appropriate plugin available.
+
+    This is the order of preference followed by this function:
+
+    1. plugin named plugin_name and registered with language_code.
+    2. the first plugin registered with language_code.
+    3. raises PluginNotAvailableError
+
     Raises:
         PluginNotAvailableError: If there is no plugin registered for the requested language.
         ConfigurationFileRequiredError: If the language adapter needs a configuration file but the latter was not given.
@@ -118,6 +147,21 @@ def _check_missing_implementation(method_name: str):
 # -------------------- API Functions --------------------
 
 
+class PluginRegister:
+    """
+    Public proxy to _PluginRegister.
+    """
+
+    def __init__(self, plugin_register: _PluginRegister):
+        self._plugin_register = plugin_register
+
+    def get_language_plugins(self, language_code: str) -> List[model.Plugin]:
+        """
+        Return a list of registered adapters for the requested language.
+        """
+        return self._plugin_register.get_language_plugins(language_code)
+
+
 get_register = _get_register()
 
 
@@ -129,7 +173,7 @@ def get_definition(
     configuration_stream: Optional[TextIO] = None,
 ) -> List[str]:
     """
-    Get a list of definitions for the given word in the given language.
+    Get a list of definitions for the given word.
     """
     plugin = _get_plugin(language_code, plugin_name)
     adapter = plugin.adapter_factory.get_adapter(configuration_stream)
@@ -144,7 +188,7 @@ def get_pos_tag(
     configuration_stream: Optional[TextIO] = None,
 ):
     """
-    Get a list of part-of-speech tags for the given word in the given language.
+    Get a list of part-of-speech tags for the given word.
     """
     plugin = _get_plugin(language_code, plugin_name)
     adapter = plugin.adapter_factory.get_adapter(configuration_stream)
@@ -159,7 +203,7 @@ def get_synonyme(
     configuration_stream: Optional[TextIO] = None,
 ):
     """
-    Get a list of synonymes to the given word in the given language.
+    Get a list of synonymes to the given word.
     """
     plugin = _get_plugin(language_code, plugin_name)
     adapter = plugin.adapter_factory.get_adapter(configuration_stream)

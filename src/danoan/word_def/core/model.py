@@ -1,3 +1,7 @@
+"""
+Data models and interfaces.
+"""
+
 from enum import Enum
 from importlib.metadata import version
 from typing import List, Optional, Protocol, TextIO
