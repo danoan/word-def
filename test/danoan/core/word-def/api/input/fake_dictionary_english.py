@@ -52,6 +52,9 @@ class Adapter:
 
 
 class AdapterFactory:
+    def version(self):
+        return "0.0.1"
+
     def get_language(self) -> str:
         return pycountry.languages.get(name="english").alpha_3
 

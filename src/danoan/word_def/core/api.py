@@ -165,6 +165,27 @@ class PluginRegister:
 get_register = _get_register()
 
 
+def api_version() -> str:
+    """
+    Get the version of the word-def package and its protocols.
+
+    Version is expected to follow the semantic versioning scheme.
+    """
+    return importlib.metadata.version("word-def")
+
+
+def is_plugin_compatible(plugin: model.PluginFactory) -> str:
+    """
+    Check if word_def and plugin version are compatible.
+
+    Versions are compatible if major version components are equal.
+    (see https://semver.org/)
+    """
+    mc_p = plugin.version().split(".")[0]
+    mc_wd = api_version().split(".")[0]
+    return mc_p == mc_wd
+
+
 @_check_missing_implementation("get_definition")
 def get_definition(
     word: str,

@@ -3,7 +3,6 @@ Data models and interfaces.
 """
 
 from enum import Enum
-from importlib.metadata import version
 from typing import Optional, Protocol, Sequence, TextIO
 
 from dataclasses import dataclass
@@ -70,15 +69,17 @@ class PluginProtocol(Protocol):
         """
         ...
 
-    @staticmethod
-    def version():
-        """
-        Get the version of the word-def package and its protocols.
-        """
-        return version("word-def")
-
 
 class PluginFactory(Protocol):
+    def version(self) -> str:
+        """
+        Get the version of the plugin.
+
+        Version should follow the semantic versioning scheme. A plugin is considered
+        compatible with a word-def package version if that major component is the same.
+        """
+        ...
+
     def get_language(self) -> str:
         """
         Get the language IETF 639-3 code.

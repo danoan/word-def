@@ -11,7 +11,7 @@ the namespace: `danoan.word-def.plugins.modules`. All modules within
 this namespace will be considered as a plugin module by `word-def`.
 
 A plugin module must implement a class named `AdapterFactory` which
-itself must be an implementation of the [`PluginFactory` protocol](../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory).
+itself must be an implementation of the [`PluginFactory` protocol](../reference/danoan.word_def.core.model.rst#danoan.word_def.core.model.PluginFactory).
 
 An example of implementation is given below:
 
@@ -29,14 +29,19 @@ class AdapterFactory:
 ```
 
 The `get_adapter` method is responsible to instantiate a class that is an implementation
-of the [`Plugin` protocol](../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol).
+of the [`Plugin` protocol](../reference/danoan.word_def.core.model.rst#danoan.word_def.core.model.PluginProtocol).
 
 An example of implementation is given below:
 
 ```python
+from importlib.metadata import version
+
 class Adapter:
     def __init__(self, configuration: Configuration):
         self.configuration = configuration
+
+    def version(self):
+        version("my-plugin-package-name")
 
     def get_definition(self, word: str) -> Sequence[str]:
         response = collins_api.get_best_matching(
@@ -59,6 +64,7 @@ class Adapter:
         else:
             raise exception.UnexpectedResponse(
                 response.status_code, response.text)
+
 ```
 
 ## Plugin installation

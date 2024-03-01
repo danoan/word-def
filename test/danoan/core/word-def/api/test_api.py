@@ -73,3 +73,18 @@ def test_get_definition():
         assert list_of_definitions[0] == "State of joy."
 
     inner()
+
+
+def test_versions():
+    plugins_location = f"{SCRIPT_FOLDER}/input"
+    plugins_base_import_path = "danoan.word_def.plugins.modules"
+
+    @plugin_context(plugins_location, plugins_base_import_path)
+    def inner():
+        register = api.get_register()
+
+        english_plugin = register.get_language_plugins("eng")[0]
+
+        assert api.is_plugin_compatible(english_plugin.adapter_factory)
+
+    inner()
