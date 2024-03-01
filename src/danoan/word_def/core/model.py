@@ -4,7 +4,7 @@ Data models and interfaces.
 
 from enum import Enum
 from importlib.metadata import version
-from typing import List, Optional, Protocol, TextIO
+from typing import Optional, Protocol, Sequence, TextIO
 
 from dataclasses import dataclass
 
@@ -38,7 +38,7 @@ class PosTag(Enum):
 
 
 class PluginProtocol(Protocol):
-    def get_definition(self, word: str) -> List[str]:
+    def get_definition(self, word: str) -> Sequence[str]:
         """
         Raises:
            UnexpectedResponseError if status code of request is different from 200.
@@ -46,7 +46,7 @@ class PluginProtocol(Protocol):
         """
         ...
 
-    def get_pos_tag(self, word: str) -> List[PosTag]:
+    def get_pos_tag(self, word: str) -> Sequence[PosTag]:
         """
         Get part-of-speech tag of the given word.
 
@@ -54,7 +54,7 @@ class PluginProtocol(Protocol):
         """
         ...
 
-    def get_synonyme(self, word: str) -> List[str]:
+    def get_synonyme(self, word: str) -> Sequence[str]:
         """
         Raises:
            UnexpectedResponseError if status code of request is different from 200.
@@ -62,7 +62,7 @@ class PluginProtocol(Protocol):
         """
         ...
 
-    def get_usage_examples(self, word: str) -> List[str]:
+    def get_usage_examples(self, word: str) -> Sequence[str]:
         """
         Raises:
            UnexpectedResponseError if status code of request is different from 200.
