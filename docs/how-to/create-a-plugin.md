@@ -6,7 +6,7 @@ for example, adding support to another language.
 
 ## The `word-def` protocol
 
-The `word-def` recognizes as plugins, modules that are registered under
+The `word-def` recognizes as plugins modules that are registered under
 the namespace: `danoan.word-def.plugins.modules`. All modules within
 this namespace will be considered as a plugin module by `word-def`.
 
@@ -65,6 +65,17 @@ class Adapter:
             raise exception.UnexpectedResponse(
                 response.status_code, response.text)
 
+```
+
+```{admonition} word-def dependency
+During the creation of your plugin package, do not pin or specify any
+range for the version of the `word-def` package. Let the package manager
+to resolve the `word-def` dependency to get installed based on the
+installed plugins.
+
+Any errors related regarding a plugin version and `word-def` version
+are signalized by the time the plugin is used. More information can
+be found at [](../design-and-architecture.md).
 ```
 
 ## Plugin installation
