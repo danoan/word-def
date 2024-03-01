@@ -1,4 +1,9 @@
-from danoan.word_def.cli.commands import get_definition, get_pos_tag
+from danoan.word_def.cli.commands import (
+    get_definition,
+    get_pos_tag,
+    get_synonyme,
+    get_usage_examples,
+)
 
 import argparse
 
@@ -11,7 +16,7 @@ def main():
     )
 
     subparser_action = parser.add_subparsers()
-    list_of_commands = [get_definition, get_pos_tag]
+    list_of_commands = [get_definition, get_pos_tag, get_synonyme, get_usage_examples]
     for command in list_of_commands:
         command.extend_parser(subparser_action)
 
