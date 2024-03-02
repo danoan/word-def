@@ -9,7 +9,7 @@ import importlib
 import logging
 import pkgutil
 import sys
-from typing import Callable, Dict, List, Optional, TextIO
+from typing import Dict, List, Optional, TextIO
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -18,6 +18,18 @@ logger.addHandler(logging.StreamHandler(sys.stdout))
 T_Register = Dict[str, List[model.Plugin]]
 
 
+def _singleton(cls):
+    instances = {}
+
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+
+    return cls
+
+
+@_singleton
 class _PluginRegister:
     """
     Language dictionaries plugin register.
@@ -25,6 +37,8 @@ class _PluginRegister:
     Internal class that holds a dictionary with references to
     installed word-def plugins package.
     """
+
+    PLUGINS_NAMESPACE = "danoan.word_def.plugins.modules"
 
     def __init__(self):
         self.plugin_register: T_Register = {}
@@ -53,10 +67,9 @@ class _PluginRegister:
         Collect all modules found in the word-def plugin namespace.
         """
         # TODO: Consider using LazyLoader
-        prefix = "danoan.word_def.plugins.modules"
-        plugins_module = importlib.import_module(prefix)
+        plugins_module = importlib.import_module(_PluginRegister.PLUGINS_NAMESPACE)
         for module_info in pkgutil.iter_modules(
-            plugins_module.__path__, prefix=f"{prefix}."
+            plugins_module.__path__, prefix=f"{_PluginRegister.PLUGINS_NAMESPACE}."
         ):
             yield importlib.import_module(module_info.name), module_info.name
 
@@ -68,21 +81,6 @@ class _PluginRegister:
             return []
 
         return self.plugin_register[language_code]
-
-
-def _get_register() -> Callable[[], "PluginRegister"]:
-    register = None
-
-    def get_register() -> PluginRegister:
-        """
-        Get public proxy do _PluginRegister.
-        """
-        nonlocal register
-        if register is None:
-            register = PluginRegister(_PluginRegister())
-        return register
-
-    return get_register
 
 
 def _get_plugin_by_index(language_code: str, index: int) -> Optional[model.Plugin]:
@@ -162,7 +160,8 @@ class PluginRegister:
         return self._plugin_register.get_language_plugins(language_code)
 
 
-get_register = _get_register()
+def get_register():
+    return PluginRegister(_PluginRegister())
 
 
 def api_version() -> str:
