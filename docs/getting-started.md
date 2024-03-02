@@ -55,4 +55,4 @@ $ word-def --plugin-configuration-filepath plugin-config.toml get-definition joy
 
 ## Contributing
 
-Please reference to our [contribution](http://github.com/danoan/word-def/docs/contributing.md) and [code-of-conduct]((http://github.com/danoan/word-def/docs/code-of-conduct.md)) guidelines.
+Please reference to our [contribution](http://danoan.github.io/word-def/contributing) and [code-of-conduct](http://danoan.github.io/word-def/code-of-conduct) guidelines.
