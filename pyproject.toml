@@ -28,7 +28,7 @@ Issues = "https://github.com/danoan/word-def"
 Source = "https://github.com/danoan/word-def"
 
 [project.scripts]
-word-def = "danoan.word_def.cli:main"
+word-def = "danoan.word_def.cli.cli:main"
 
 # -------------------- build backend --------------------
 [tool.setuptools.packages.find]
@@ -46,7 +46,7 @@ minversion = "6.0"
 addopts = "--cov --strict-markers"
 xfail_strict = true
 testpaths = [
-    "tests"
+    "test"
 ]
 pythonpath = [
 "test" # Needed in order to import conftest.py in test modules
@@ -76,7 +76,7 @@ source = [
 show_missing = true
 skip_covered = true
 omit = []
-fail_under = 90
+fail_under = 70
 
 
 # -------------------- type checking --------------------

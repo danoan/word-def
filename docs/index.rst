@@ -17,16 +17,16 @@ How-to guides
 .. toctree::
    :maxdepth: 1
 
-   how-to/
+   how-to/create-a-plugin
 
 
 Reference guides
 ================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   reference/
+   api-reference
 
 
 Explanation
