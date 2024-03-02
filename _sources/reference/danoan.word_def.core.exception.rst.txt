@@ -1,0 +1,7 @@
+danoan.word\_def.core.exception module
+======================================
+
+.. automodule:: danoan.word_def.core.exception
+   :members:
+   :undoc-members:
+   :show-inheritance:

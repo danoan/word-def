@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design and Architecture &mdash; word-def 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=a3d76245" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=01f34227"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="API Reference" href="api-reference.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            word-def
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started with Word Definition</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how-to/create-a-plugin.html">How to create a word-def plugin</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Design and Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-architecture">System architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#design-notes">Design Notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#plugin-architecture">Plugin architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#decision">Decision</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#status">Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#consequences">Consequences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#protocols-instead-of-abstract-classes">Protocols instead of Abstract Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Decision</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Consequences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plugin-register-mechanism">Plugin register mechanism</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Decision</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">Consequences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-the-plugin-register-mechanism">Testing the plugin register mechanism</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id9">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">Decision</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">Consequences</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">word-def</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Design and Architecture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/design-and-architecture.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="design-and-architecture">
+<h1>Design and Architecture<a class="headerlink" href="#design-and-architecture" title="Link to this heading"></a></h1>
+<section id="system-architecture">
+<h2>System architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<p>In the diagram below, the <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code> is virtual. The two
+classes declared within it are protocols that are actually declared
+in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
+<div class="mermaid">
+            classDiagram
+    namespace word-def-plugin-core{
+        class Plugin
+        class PluginFactory
+    }
+
+    namespace word-def-plugin-english-collins{
+        class Adapter_en[&quot;Adapter&quot;]
+        class AdapterFactory_en[&quot;AdapterFactory&quot;]
+    }
+
+    namespace word-def-plugin-italian-pons{
+        class Adapter_it[&quot;Adapter&quot;]
+        class AdapterFactory_it[&quot;AdapterFactory&quot;]
+    }
+
+    namespace word-def{
+        class get_definition
+        class get_synonyme
+        class get_usage_examples
+    }
+
+
+    Adapter_en &lt;|.. Plugin
+    AdapterFactory_en &lt;|-- PluginFactory
+    Adapter_it &lt;|.. Plugin
+    AdapterFactory_it &lt;|-- PluginFactory
+
+    Plugin
+    &lt;&lt;interface&gt;&gt; Plugin
+    Plugin: get_definition()
+    Plugin: get_synonyme()
+    Plugin: get_usage_examples()
+
+    PluginFactory
+    &lt;&lt;interface&gt;&gt; PluginFactory
+    PluginFactory: get_language()
+    PluginFactory: get_adapter()
+
+    get_definition -- Adapter_en
+    get_definition -- Adapter_it
+
+        </div></section>
+<section id="design-notes">
+<h2>Design Notes<a class="headerlink" href="#design-notes" title="Link to this heading"></a></h2>
+<p>This document lists the design and architectural decisions taken
+during the development of Word Definition. It follows
+the <a class="reference external" href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions.html">Architecture Decisions</a> format.</p>
+<section id="plugin-architecture">
+<h3>Plugin architecture<a class="headerlink" href="#plugin-architecture" title="Link to this heading"></a></h3>
+<p><strong>Date: (2024-02-02)</strong></p>
+<section id="context">
+<h4>Context<a class="headerlink" href="#context" title="Link to this heading"></a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> contains the backbones of a plugin architecture. The <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
+package defines the protocols to be implemented by plugins.</p>
+<ol class="arabic simple">
+<li><p>Plugin</p></li>
+<li><p>PluginFactory</p></li>
+</ol>
+<p>The entry point for plugins is the class <code class="docutils literal notranslate"><span class="pre">AdapterFactory</span></code> which every plugin
+must define. This class follows the <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocol and its goal is
+to instantiate <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> implementations and provide an interface to its
+metadata.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> plugin register will try to load as a plugin all python modules
+installed at <code class="docutils literal notranslate"><span class="pre">danoan.word_def.plugins.modules</span></code>.</p>
+<div class="admonition-protocol-enforcement admonition">
+<p class="admonition-title">Protocol enforcement</p>
+<p><code class="docutils literal notranslate"><span class="pre">word-def</span></code> uses python Protocols which do not enforce <code class="docutils literal notranslate"><span class="pre">is-a</span></code> relations (as
+it is the case with regular inheritance and abstract classes).</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package can be used as a library, via the <code class="docutils literal notranslate"><span class="pre">api</span></code> module or via
+a <code class="docutils literal notranslate"><span class="pre">cli</span></code>. A plugin is installed as any other python package.</p>
+</section>
+<section id="decision">
+<h4>Decision<a class="headerlink" href="#decision" title="Link to this heading"></a></h4>
+<p>Use plugin architecture to inject functionalities to <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
+</section>
+<section id="status">
+<h4>Status<a class="headerlink" href="#status" title="Link to this heading"></a></h4>
+<p>Done.</p>
+</section>
+<section id="consequences">
+<h4>Consequences<a class="headerlink" href="#consequences" title="Link to this heading"></a></h4>
+<p>Creation of interfaces:</p>
+<ol class="arabic simple">
+<li><p>Plugin</p></li>
+<li><p>PluginFactory</p></li>
+</ol>
+</section>
+</section>
+<section id="protocols-instead-of-abstract-classes">
+<h3>Protocols instead of Abstract Classes<a class="headerlink" href="#protocols-instead-of-abstract-classes" title="Link to this heading"></a></h3>
+<p><strong>Date: (2024-02-19)</strong></p>
+<section id="id1">
+<h4>Context<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>A plugin is a python module that must have two classes:</p>
+<ol class="arabic simple">
+<li><p>One should implement the <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> protocol.</p></li>
+<li><p>The second one should implement the <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocol.</p></li>
+</ol>
+<p>The use of protocols gives us a loosely coupled object compared with
+abstract classes and regular inheritance. The implementations above do
+not need to inherit from any class, and that removes a dependency.</p>
+<div class="admonition-abstract-class admonition">
+<p class="admonition-title">Abstract class</p>
+<p>If we use abstract classes we would have to create a package to hold
+the abstract classes, e.g. <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code>. Using protocols
+allows us to reduce the number of packages to maintain, since the
+protocols can be declared in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
+</div>
+<div class="admonition-why-to-declare-protocols admonition">
+<p class="admonition-title">Why to declare protocols?</p>
+<p>Since we do not have the enforcement during instantiation of classes
+derived from regular inheritance, why would someone use protocols? First
+because it participates of static type checking. If we are passing an
+object to a function that expects protocol <code class="docutils literal notranslate"><span class="pre">P</span></code> but the object do not
+implement it, this will raise an error. Second because we can take
+advantage of automatic documentation generation from code to have the
+protocols documented.</p>
+</div>
+</section>
+<section id="id2">
+<h4>Decision<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>Implement <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> and <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> as protocol.</p>
+</section>
+<section id="id3">
+<h4>Status<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<p>Done.</p>
+</section>
+<section id="id4">
+<h4>Consequences<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<section id="reduce-of-maintenance-burden">
+<h5>Reduce of maintenance burden<a class="headerlink" href="#reduce-of-maintenance-burden" title="Link to this heading"></a></h5>
+<p>We don’t need to create a <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code> package anymore. The
+protocols would be declared in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
+</section>
+<section id="plugins-depends-on-word-def-package">
+<h5>Plugins depends on <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package<a class="headerlink" href="#plugins-depends-on-word-def-package" title="Link to this heading"></a></h5>
+<p>At first glance it could sound weird that the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package, that
+is extended by plugins, it itself a dependence of plugins. But that
+does not pose a problem.</p>
+<p>The plugins are registered at running time, so the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package
+is independent and could be installed without any plugins.</p>
+<p>There is one issue though. Let us assume there exist published plugins
+A and B. A new version of <code class="docutils literal notranslate"><span class="pre">word-def</span></code> comes out (v2.0). This version does
+some changes in the interface. The maintainer of Plugin A publishes a
+new version to comply with the changes. The maintainer of B does not.</p>
+<ul class="simple">
+<li><p>Plugin A uses word-def (v2.0)</p></li>
+<li><p>Plugin B uses word-def (v1.0)</p></li>
+</ul>
+<p>If in our machine we try to install the latest versions of both plugins,
+it won’t work because they have incompatible dependencies. The only
+scenario in which we could have both is to keep v1.0 of <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
+<div class="admonition-incompatible-dependency-issue admonition">
+<p class="admonition-title">Incompatible dependency issue</p>
+<p>This problem is also present in the design in which we have the <code class="docutils literal notranslate"><span class="pre">word-def-core</span></code>
+package.</p>
+</div>
+<p>This is not ideal. We would like to have both plugins with their latest versions
+installed and if any issue appear, simply signalize to the user that that particular
+plugin cannot be used.</p>
+<p>To solve that issue, the plugins should not specify the version of <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
+from which they depend on and let the package install manager (e.g. pip) to
+handle that.</p>
+<div class="admonition-checking-version-compatibility admonition">
+<p class="admonition-title">Checking version compatibility</p>
+<p>It is always possible to check the plugin version and the word-def version. The
+PluginFactory protocol specifies the method <code class="docutils literal notranslate"><span class="pre">version</span></code> and the api has the methods
+<code class="docutils literal notranslate"><span class="pre">api_version</span></code> and <code class="docutils literal notranslate"><span class="pre">is_plugin_compatible</span></code> for that purpose.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="plugin-register-mechanism">
+<h3>Plugin register mechanism<a class="headerlink" href="#plugin-register-mechanism" title="Link to this heading"></a></h3>
+<p><strong>Date: (2024-03-01)</strong></p>
+<section id="id5">
+<h4>Context<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<p>We need a mechanism to register plugins such that <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
+can automatically identify and load these plugins at runtime.</p>
+<p><strong>Using a decorator</strong></p>
+<p>The first solution though was to use a decorator and share the
+burden with the plugin creator. In this scenario, the plugin
+creator would have to add the decorator <code class="docutils literal notranslate"><span class="pre">&#64;register</span></code> above the
+<code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@model</span><span class="o">.</span><span class="n">register</span>
+<span class="k">class</span> <span class="nc">AdapterFactory</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>However, we still need a way to automatically load the plugin
+module at runtime. The second strategy allows us to do that
+without putting any burden at the plugin creator.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">singleton</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="n">instances</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
+            <span class="n">instances</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instances</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">get_instance</span>
+
+<span class="nd">@singleton</span>
+<span class="k">class</span> <span class="nc">_PluginRegister</span><span class="p">:</span>
+    <span class="o">...</span>
+
+<span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">T_AdapterFactory</span><span class="p">):</span>
+    <span class="n">plugin_register</span> <span class="o">=</span> <span class="n">_PluginRegister</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">adapter_factory</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">plugin_register</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">adapter_factory</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">cls</span>
+</pre></div>
+</div>
+<p><strong>Fixed plugin namespace and package introspection</strong></p>
+<p>In this design the plugins are obliged to be within
+a fixed namespace. This namespace is <code class="docutils literal notranslate"><span class="pre">danoan.word_def.modules.plugins</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package can only identify and load python modules that
+are located within this namespace.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">collect_modules</span><span class="p">():</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;danoan.word_def.plugins.modules&quot;</span>
+        <span class="n">plugins_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">module_info</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">(</span>
+            <span class="n">plugins_module</span><span class="o">.</span><span class="n">__path__</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">):</span>
+            <span class="k">yield</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_info</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">module_info</span><span class="o">.</span><span class="n">name</span>
+
+</pre></div>
+</div>
+<p>The strongest point of this approach is automatic load. The user should
+only install the plugin package to have access to its functionalities.</p>
+<p>The drawback is the restriction to plugin creators to create their plugins
+in a fixed namespace.</p>
+</section>
+<section id="id6">
+<h4>Decision<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p>Use package introspection and python import system mechanism via importlib
+to implement the plugin mechanism in <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
+</section>
+<section id="id7">
+<h4>Status<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<p>Done.</p>
+</section>
+<section id="id8">
+<h4>Consequences<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<p>Plugin packages must be created within the namespace <code class="docutils literal notranslate"><span class="pre">danoan.word_def.modules.plugins</span></code>.</p>
+</section>
+</section>
+<section id="testing-the-plugin-register-mechanism">
+<h3>Testing the plugin register mechanism<a class="headerlink" href="#testing-the-plugin-register-mechanism" title="Link to this heading"></a></h3>
+<p><strong>Date: (2024-03-02)</strong></p>
+<section id="id9">
+<h4>Context<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<p>The plugin mechanism is designed to search and load modules in a given namespace. To
+test this mechanism we need to make the python import system to believe that is
+a fake_test_plugin python module in such namespace.</p>
+<p>Our solution is to create a decorator to wrap our test function around a context manager.
+Within the context manager we create a temporary directory <code class="docutils literal notranslate"><span class="pre">T</span></code> and the directories
+corresponding to our namespace. Finally, it is sufficient to add <code class="docutils literal notranslate"><span class="pre">T</span></code> to <code class="docutils literal notranslate"><span class="pre">sys.path</span></code> to
+emulate the namespace at runtime in the python import system.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plugin_context</span><span class="p">(</span><span class="n">plugins_location</span><span class="p">,</span> <span class="n">plugins_base_import_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tempdir</span><span class="p">)</span>
+
+                <span class="c1"># Create &lt;tempdir&gt;/&lt;namespace_dir&gt;</span>
+                <span class="c1"># Copy fake_module to &lt;tempdir&gt;/&lt;namespace_dir&gt;</span>
+
+                <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inner</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+
+
+<span class="k">def</span> <span class="nf">test_plugin_register</span><span class="p">():</span>
+    <span class="n">plugins_location</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">SCRIPT_FOLDER</span><span class="si">}</span><span class="s2">/input&quot;</span>
+    <span class="n">plugins_base_import_path</span> <span class="o">=</span> <span class="s2">&quot;danoan.word_def.plugins.modules&quot;</span>
+
+    <span class="nd">@plugin_context</span><span class="p">(</span><span class="n">plugins_location</span><span class="p">,</span> <span class="n">plugins_base_import_path</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
+        <span class="n">register</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_register</span><span class="p">()</span>
+
+        <span class="n">language_plugins</span> <span class="o">=</span> <span class="n">register</span><span class="o">.</span><span class="n">get_language_plugins</span><span class="p">(</span><span class="s2">&quot;eng&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">language_plugins</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">inner</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h4>Decision<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<p>Wrap test functions around context manager to emulate the plugins namespace.</p>
+</section>
+<section id="id11">
+<h4>Status<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<p>Done.</p>
+</section>
+<section id="id12">
+<h4>Consequences<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<p>None.</p>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api-reference.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Daniel Martins Antunes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

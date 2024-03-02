@@ -1,0 +1,7 @@
+danoan.word\_def.core.api module
+================================
+
+.. automodule:: danoan.word_def.core.api
+   :members:
+   :undoc-members:
+   :show-inheritance:

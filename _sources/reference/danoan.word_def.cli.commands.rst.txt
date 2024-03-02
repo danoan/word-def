@@ -1,0 +1,15 @@
+danoan.word\_def.cli.commands namespace
+=======================================
+
+.. py:module:: danoan.word_def.cli.commands
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   danoan.word_def.cli.commands.get_definition
+   danoan.word_def.cli.commands.get_pos_tag
+   danoan.word_def.cli.commands.get_synonyme
+   danoan.word_def.cli.commands.get_usage_examples

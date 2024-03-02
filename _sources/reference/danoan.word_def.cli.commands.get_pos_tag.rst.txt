@@ -1,0 +1,7 @@
+danoan.word\_def.cli.commands.get\_pos\_tag module
+==================================================
+
+.. automodule:: danoan.word_def.cli.commands.get_pos_tag
+   :members:
+   :undoc-members:
+   :show-inheritance:

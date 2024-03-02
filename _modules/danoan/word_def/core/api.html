@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>danoan.word_def.core.api &mdash; word-def 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css?v=a3d76245" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            word-def
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started.html">Getting started with Word Definition</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/create-a-plugin.html">How to create a word-def plugin</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api-reference.html">API Reference</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design-and-architecture.html">Design and Architecture</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">word-def</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">danoan.word_def.core.api</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for danoan.word_def.core.api</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Public API.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">danoan.word_def.core</span> <span class="kn">import</span> <span class="n">exception</span><span class="p">,</span> <span class="n">model</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pkgutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TextIO</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">))</span>
+
+<span class="n">T_Register</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Plugin</span><span class="p">]]</span>
+
+
+<span class="k">def</span> <span class="nf">_singleton</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="n">instances</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
+            <span class="n">instances</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instances</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="bp">cls</span>
+
+
+<span class="nd">@_singleton</span>
+<span class="k">class</span> <span class="nc">_PluginRegister</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Language dictionaries plugin register.</span>
+
+<span class="sd">    Internal class that holds a dictionary with references to</span>
+<span class="sd">    installed word-def plugins package.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">PLUGINS_NAMESPACE</span> <span class="o">=</span> <span class="s2">&quot;danoan.word_def.plugins.modules&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">:</span> <span class="n">T_Register</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">languages_available</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">module</span><span class="p">,</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collect_plugin_modules</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">factory</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">AdapterFactory</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The module </span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2"> does not seem to have an AdapterFactory function and thus cannot be registered as a plugin. Skipping it.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">plugin</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Plugin</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">factory</span><span class="p">)</span>
+
+            <span class="n">language</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">get_language</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">language</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">[</span><span class="n">language</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">[</span><span class="n">language</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">languages_available</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_collect_plugin_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Collect all modules found in the word-def plugin namespace.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Consider using LazyLoader</span>
+        <span class="n">plugins_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">_PluginRegister</span><span class="o">.</span><span class="n">PLUGINS_NAMESPACE</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">module_info</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">(</span>
+            <span class="n">plugins_module</span><span class="o">.</span><span class="n">__path__</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_PluginRegister</span><span class="o">.</span><span class="n">PLUGINS_NAMESPACE</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">):</span>
+            <span class="k">yield</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_info</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">module_info</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">get_language_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Plugin</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a list of registered adapters for the requested language.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">language_code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">languages_available</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">[</span><span class="n">language_code</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_get_plugin_by_index</span><span class="p">(</span><span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Plugin</span><span class="p">]:</span>
+    <span class="n">register</span> <span class="o">=</span> <span class="n">get_register</span><span class="p">()</span>
+    <span class="n">list_of_plugins</span> <span class="o">=</span> <span class="n">register</span><span class="o">.</span><span class="n">get_language_plugins</span><span class="p">(</span><span class="n">language_code</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_of_plugins</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">list_of_plugins</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">_get_plugin_by_name</span><span class="p">(</span><span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Plugin</span><span class="p">]:</span>
+    <span class="n">register</span> <span class="o">=</span> <span class="n">get_register</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">register</span><span class="o">.</span><span class="n">get_language_plugins</span><span class="p">(</span><span class="n">language_code</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">plugin</span><span class="o">.</span><span class="n">package_name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">plugin</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">_get_plugin</span><span class="p">(</span><span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">model</span><span class="o">.</span><span class="n">Plugin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the most appropriate plugin available.</span>
+
+<span class="sd">    This is the order of preference followed by this function:</span>
+
+<span class="sd">    1. plugin named plugin_name and registered with language_code.</span>
+<span class="sd">    2. the first plugin registered with language_code.</span>
+<span class="sd">    3. raises PluginNotAvailableError</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        PluginNotAvailableError: If there is no plugin registered for the requested language.</span>
+<span class="sd">        ConfigurationFileRequiredError: If the language adapter needs a configuration file but the latter was not given.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">plugin_name</span><span class="p">:</span>
+        <span class="n">plugin</span> <span class="o">=</span> <span class="n">_get_plugin_by_name</span><span class="p">(</span><span class="n">language_code</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plugin</span> <span class="o">=</span> <span class="n">_get_plugin_by_index</span><span class="p">(</span><span class="n">language_code</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">plugin</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">exception</span><span class="o">.</span><span class="n">PluginNotAvailableError</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">plugin</span>
+
+
+<span class="k">def</span> <span class="nf">_check_missing_implementation</span><span class="p">(</span><span class="n">method_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">api_function</span><span class="p">):</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">api_function</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">api_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">exception</span><span class="o">.</span><span class="n">PluginMethodNotImplementedError</span><span class="p">(</span>
+                    <span class="n">method_name</span><span class="o">=</span><span class="n">method_name</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">ex</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">return</span> <span class="n">inner</span>
+
+
+<span class="c1"># -------------------- API Functions --------------------</span>
+
+
+<div class="viewcode-block" id="PluginRegister">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.PluginRegister">[docs]</a>
+<span class="k">class</span> <span class="nc">PluginRegister</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Public proxy to _PluginRegister.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_register</span><span class="p">:</span> <span class="n">_PluginRegister</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_register</span> <span class="o">=</span> <span class="n">plugin_register</span>
+
+<div class="viewcode-block" id="PluginRegister.get_language_plugins">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.PluginRegister.get_language_plugins">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_language_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Plugin</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a list of registered adapters for the requested language.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_register</span><span class="o">.</span><span class="n">get_language_plugins</span><span class="p">(</span><span class="n">language_code</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="get_register">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.get_register">[docs]</a>
+<span class="k">def</span> <span class="nf">get_register</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">PluginRegister</span><span class="p">(</span><span class="n">_PluginRegister</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="api_version">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.api_version">[docs]</a>
+<span class="k">def</span> <span class="nf">api_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the version of the word-def package and its protocols.</span>
+
+<span class="sd">    Version is expected to follow the semantic versioning scheme.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="s2">&quot;word-def&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_plugin_compatible">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.is_plugin_compatible">[docs]</a>
+<span class="k">def</span> <span class="nf">is_plugin_compatible</span><span class="p">(</span><span class="n">plugin</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">PluginFactory</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if word_def and plugin version are compatible.</span>
+
+<span class="sd">    Versions are compatible if major version components are equal.</span>
+<span class="sd">    (see https://semver.org/)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mc_p</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">version</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mc_wd</span> <span class="o">=</span> <span class="n">api_version</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">mc_p</span> <span class="o">==</span> <span class="n">mc_wd</span></div>
+
+
+
+<div class="viewcode-block" id="get_definition">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.get_definition">[docs]</a>
+<span class="nd">@_check_missing_implementation</span><span class="p">(</span><span class="s2">&quot;get_definition&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_definition</span><span class="p">(</span>
+    <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">plugin_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a list of definitions for the given word.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plugin</span> <span class="o">=</span> <span class="n">_get_plugin</span><span class="p">(</span><span class="n">language_code</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">)</span>
+    <span class="n">adapter</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">adapter_factory</span><span class="o">.</span><span class="n">get_adapter</span><span class="p">(</span><span class="n">configuration_stream</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get_definition</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_pos_tag">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.get_pos_tag">[docs]</a>
+<span class="nd">@_check_missing_implementation</span><span class="p">(</span><span class="s2">&quot;get_pos_tag&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_pos_tag</span><span class="p">(</span>
+    <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">plugin_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a list of part-of-speech tags for the given word.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plugin</span> <span class="o">=</span> <span class="n">_get_plugin</span><span class="p">(</span><span class="n">language_code</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">)</span>
+    <span class="n">adapter</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">adapter_factory</span><span class="o">.</span><span class="n">get_adapter</span><span class="p">(</span><span class="n">configuration_stream</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get_pos_tag</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_synonyme">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.get_synonyme">[docs]</a>
+<span class="nd">@_check_missing_implementation</span><span class="p">(</span><span class="s2">&quot;get_synonyme&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_synonyme</span><span class="p">(</span>
+    <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">plugin_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a list of synonymes to the given word.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plugin</span> <span class="o">=</span> <span class="n">_get_plugin</span><span class="p">(</span><span class="n">language_code</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">)</span>
+    <span class="n">adapter</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">adapter_factory</span><span class="o">.</span><span class="n">get_adapter</span><span class="p">(</span><span class="n">configuration_stream</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get_synonyme</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_usage_examples">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.get_usage_examples">[docs]</a>
+<span class="nd">@_check_missing_implementation</span><span class="p">(</span><span class="s2">&quot;get_usage_examples&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_usage_examples</span><span class="p">(</span>
+    <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">plugin_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a list of examples in which the given word is employed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plugin</span> <span class="o">=</span> <span class="n">_get_plugin</span><span class="p">(</span><span class="n">language_code</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">)</span>
+    <span class="n">adapter</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">adapter_factory</span><span class="o">.</span><span class="n">get_adapter</span><span class="p">(</span><span class="n">configuration_stream</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get_usage_examples</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Daniel Martins Antunes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

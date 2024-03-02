@@ -1,0 +1,17 @@
+danoan.word\_def.core package
+=============================
+
+.. automodule:: danoan.word_def.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   danoan.word_def.core.api
+   danoan.word_def.core.exception
+   danoan.word_def.core.model

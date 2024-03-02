@@ -1,0 +1,21 @@
+danoan.word\_def.cli namespace
+==============================
+
+.. py:module:: danoan.word_def.cli
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   danoan.word_def.cli.commands
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   danoan.word_def.cli.cli
+   danoan.word_def.cli.utils

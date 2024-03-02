@@ -1,0 +1,7 @@
+danoan.word\_def.cli.commands.get\_usage\_examples module
+=========================================================
+
+.. automodule:: danoan.word_def.cli.commands.get_usage_examples
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+danoan.word\_def.cli.commands.get\_synonyme module
+==================================================
+
+.. automodule:: danoan.word_def.cli.commands.get_synonyme
+   :members:
+   :undoc-members:
+   :show-inheritance:

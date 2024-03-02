@@ -1,0 +1,7 @@
+danoan.word\_def.cli.cli module
+===============================
+
+.. automodule:: danoan.word_def.cli.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
