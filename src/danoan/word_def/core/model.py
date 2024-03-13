@@ -61,7 +61,7 @@ class PluginProtocol(Protocol):
         """
         ...
 
-    def get_usage_examples(self, word: str) -> Sequence[str]:
+    def get_usage_example(self, word: str) -> Sequence[str]:
         """
         Raises:
            UnexpectedResponseError if status code of request is different from 200.
@@ -82,7 +82,7 @@ class PluginFactory(Protocol):
 
     def get_language(self) -> str:
         """
-        Get the language IETF 639-3 code.
+        Get the language IETF 639-3 code. An empty string means multilanguage.
         """
         ...
 

@@ -9,7 +9,7 @@ import importlib
 import logging
 import pkgutil
 import sys
-from typing import Dict, List, Optional, TextIO
+from typing import Dict, List, Optional, Sequence, TextIO
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -27,6 +27,32 @@ def _singleton(cls):
         return instances[cls]
 
     return cls
+
+
+class _MultilanguageWrapper:
+    """
+    This class is used to wrap Multilanguages plugins at running time.
+
+    The goal of this class is to create a version of the multilanguage adapter
+    for the language requested by the user. It calls the exactly same methods
+    of base_factory, except for the get_language, which is overwritten.
+    """
+
+    def __init__(self, base_factory: model.PluginFactory, language: str):
+        self.base_factory = base_factory
+        self.language = language
+        self.base_factory.get_language = self.get_language
+
+    def version(self) -> str:
+        return self.base_factory.version()
+
+    def get_language(self) -> str:
+        return self.language
+
+    def get_adapter(
+        self, configuration_stream: Optional[TextIO] = None
+    ) -> model.PluginProtocol:
+        return self.base_factory.get_adapter(configuration_stream)
 
 
 @_singleton
@@ -77,10 +103,22 @@ class _PluginRegister:
         """
         Return a list of registered adapters for the requested language.
         """
-        if language_code not in self.languages_available:
-            return []
+        plugins_for_language = []
+        if language_code in self.languages_available:
+            plugins_for_language = self.plugin_register[language_code]
 
-        return self.plugin_register[language_code]
+        if "" in self.languages_available:
+            for multi_lang_plugin in self.plugin_register[""]:
+                specific_language_factory = _MultilanguageWrapper(
+                    multi_lang_plugin.adapter_factory, language_code
+                )
+                plugins_for_language.append(
+                    model.Plugin(
+                        multi_lang_plugin.package_name, specific_language_factory
+                    )
+                )
+
+        return plugins_for_language
 
 
 def _get_plugin_by_index(language_code: str, index: int) -> Optional[model.Plugin]:
@@ -230,8 +268,8 @@ def get_synonyme(
     return adapter.get_synonyme(word)
 
 
-@_check_missing_implementation("get_usage_examples")
-def get_usage_examples(
+@_check_missing_implementation("get_usage_example")
+def get_usage_example(
     word: str,
     language_code: str,
     plugin_name: Optional[str] = None,
@@ -242,4 +280,4 @@ def get_usage_examples(
     """
     plugin = _get_plugin(language_code, plugin_name)
     adapter = plugin.adapter_factory.get_adapter(configuration_stream)
-    return adapter.get_usage_examples(word)
+    return adapter.get_usage_example(word)
