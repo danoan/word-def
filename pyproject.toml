@@ -65,6 +65,9 @@ branch = false
 source = [
     "danoan"
 ]
+omit = [
+    "/tmp/*"
+]
 
 [tool.coverage.paths]
 source = [

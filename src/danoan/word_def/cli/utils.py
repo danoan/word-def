@@ -53,8 +53,8 @@ def plugin_method_not_implemented_error_message(
 ) -> str:
     return dedent(
         f"""
-        The method {ex.method_name} is not implemented for the requested language plugin.
-        Make sure that you have a updated version installed.
+        The method {ex.method_name} is not implemented for the requested language plugin or
+        the plugin has an error. Make sure that you have a updated version installed.
         """
     )
 
