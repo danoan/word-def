@@ -18,6 +18,8 @@ How-to guides
    :maxdepth: 1
 
    how-to/create-a-plugin
+   how-to/setup-a-plugin
+   how-to/test-a-plugin
 
 
 Reference guides

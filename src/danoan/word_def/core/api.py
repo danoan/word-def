@@ -253,19 +253,19 @@ def get_pos_tag(
     return adapter.get_pos_tag(word)
 
 
-@_check_missing_implementation("get_synonyme")
-def get_synonyme(
+@_check_missing_implementation("get_synonym")
+def get_synonym(
     word: str,
     language_code: str,
     plugin_name: Optional[str] = None,
     configuration_stream: Optional[TextIO] = None,
 ):
     """
-    Get a list of synonymes to the given word.
+    Get a list of synonyms to the given word.
     """
     plugin = _get_plugin(language_code, plugin_name)
     adapter = plugin.adapter_factory.get_adapter(configuration_stream)
-    return adapter.get_synonyme(word)
+    return adapter.get_synonym(word)
 
 
 @_check_missing_implementation("get_usage_example")
