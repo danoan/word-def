@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Optional
 
 
-def __get_synonyme__(
+def __get_synonym__(
     word: str,
     language_code: str,
     plugin_configuration_filepath: Optional[Path] = None,
@@ -15,18 +15,16 @@ def __get_synonyme__(
     **kwargs,
 ):
     """
-    Get synonymes of a given word.
+    Get synonyms of a given word.
     """
     if plugin_name is None:
         plugin_name = utils.get_plugin_name(language_code)
 
     ss = utils.get_configuration_stream(plugin_name, plugin_configuration_filepath)
 
-    list_of_synonyme = []
+    list_of_synonym = []
     try:
-        list_of_synonyme = api.get_synonyme(
-            word, language_code, configuration_stream=ss
-        )
+        list_of_synonym = api.get_synonym(word, language_code, configuration_stream=ss)
     except exception.ConfigurationFileRequiredError:
         print(utils.configuration_file_required_error_message())
     except exception.PluginNotAvailableError:
@@ -34,13 +32,13 @@ def __get_synonyme__(
     except exception.PluginMethodNotImplementedError as ex:
         print(utils.plugin_method_not_implemented_error_message(ex))
     else:
-        for i, synonyme in enumerate(list_of_synonyme, 1):
-            print(f"{i}. {synonyme}")
+        for i, synonym in enumerate(list_of_synonym, 1):
+            print(f"{i}. {synonym}")
 
 
 def extend_parser(subparser_action=None):
-    command = "get-synonyme"
-    description = __get_synonyme__.__doc__
+    command = "get-synonym"
+    description = __get_synonym__.__doc__
     help = description.split(".")[0] if description else ""
 
     if subparser_action:
@@ -52,7 +50,7 @@ def extend_parser(subparser_action=None):
         )
     else:
         parser = argparse.ArgumentParser(
-            "Get word synonymes",
+            "Get word synonyms",
             description=description,
             formatter_class=argparse.RawTextHelpFormatter,
         )
@@ -61,7 +59,7 @@ def extend_parser(subparser_action=None):
     parser.add_argument("language_code", help="ISO 639-2 three letter language code")
     parser.add_argument("--plugin-name", help="complete package name of the plugin")
 
-    parser.set_defaults(func=__get_synonyme__, subcommand_help=parser.print_help)
+    parser.set_defaults(func=__get_synonym__, subcommand_help=parser.print_help)
 
     return parser
 

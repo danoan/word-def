@@ -53,7 +53,7 @@ class PluginProtocol(Protocol):
         """
         ...
 
-    def get_synonyme(self, word: str) -> Sequence[str]:
+    def get_synonym(self, word: str) -> Sequence[str]:
         """
         Raises:
            UnexpectedResponseError if status code of request is different from 200.
