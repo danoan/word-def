@@ -54,6 +54,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="how-to/create-a-plugin.html">How to create a word-def plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/setup-a-plugin.html">How to setup a plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/test-a-plugin.html">How to test a plugin</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
@@ -88,6 +90,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#id10">Decision</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id11">Status</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id12">Consequences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-language-plugins-register-mechanism">Multi-language plugins register mechanism</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id13">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">Decision</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">Consequences</a></li>
 </ul>
 </li>
 </ul>
@@ -432,6 +441,44 @@ emulate the namespace at runtime in the python import system.</p>
 </section>
 <section id="id12">
 <h4>Consequences<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<p>None.</p>
+</section>
+</section>
+<section id="multi-language-plugins-register-mechanism">
+<h3>Multi-language plugins register mechanism<a class="headerlink" href="#multi-language-plugins-register-mechanism" title="Link to this heading"></a></h3>
+<p><strong>Date: (2024-03-15)</strong></p>
+<section id="id13">
+<h4>Context<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<p>Originally, plugins were designed to be exclusive to a certain language. An English
+plugin would only respond to queries regarding the English language.</p>
+<p>However, the <code class="docutils literal notranslate"><span class="pre">word-def-plugin-multilanguage-chatgpt</span></code> can handle several languages at
+once by simple mentioning the language in the prompt. The language in this case is
+a plugin parameter.</p>
+<p>We did not like to change the <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> neither the <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocols, therefore,
+we decided that multilanguage plugins will return an empty string for the <code class="docutils literal notranslate"><span class="pre">get_language</span></code>
+method and that it is up to the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> api to inform at runtime the language to which
+the multilanguage plugin should operate on.</p>
+<p>Every method of <code class="docutils literal notranslate"><span class="pre">word-def</span></code> API needs a language parameter. The language parameter is used
+to find an available plugin to execute the task in the given language. Whenever the plugin
+search is started, we make sure to wrap the multilanguage factory into a wrapper class
+such that the calls of every method of the multilanguage factory is preserved, except
+<code class="docutils literal notranslate"><span class="pre">get_language</span></code>, which is replaced by the language specified by the user.</p>
+</section>
+<section id="id14">
+<h4>Decision<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Allow multilanguage plugins.</p></li>
+<li><p>The empty string as return value of <code class="docutils literal notranslate"><span class="pre">get_method</span></code> indicates a multilanguage plugin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">word-def</span></code> API wraps the multilanguage factory and overwrites the <code class="docutils literal notranslate"><span class="pre">get_language</span></code> method
+appropriately.</p></li>
+</ul>
+</section>
+<section id="id15">
+<h4>Status<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<p>Done.</p>
+</section>
+<section id="id16">
+<h4>Consequences<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
 <p>None.</p>
 </section>
 </section>

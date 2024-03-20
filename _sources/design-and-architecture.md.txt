@@ -337,3 +337,43 @@ Done.
 #### Consequences
 
 None.
+
+### Multi-language plugins register mechanism
+
+**Date: (2024-03-15)**
+
+#### Context
+
+Originally, plugins were designed to be exclusive to a certain language. An English
+plugin would only respond to queries regarding the English language.
+
+However, the `word-def-plugin-multilanguage-chatgpt` can handle several languages at
+once by simple mentioning the language in the prompt. The language in this case is
+a plugin parameter.
+
+We did not like to change the `Plugin` neither the `PluginFactory` protocols, therefore,
+we decided that multilanguage plugins will return an empty string for the `get_language`
+method and that it is up to the `word-def` api to inform at runtime the language to which
+the multilanguage plugin should operate on.
+
+Every method of `word-def` API needs a language parameter. The language parameter is used
+to find an available plugin to execute the task in the given language. Whenever the plugin
+search is started, we make sure to wrap the multilanguage factory into a wrapper class
+such that the calls of every method of the multilanguage factory is preserved, except
+`get_language`, which is replaced by the language specified by the user.
+
+
+#### Decision
+
+- Allow multilanguage plugins.
+- The empty string as return value of `get_method` indicates a multilanguage plugin.
+- `word-def` API wraps the multilanguage factory and overwrites the `get_language` method
+  appropriately.
+
+#### Status
+
+Done.
+
+#### Consequences
+
+None.

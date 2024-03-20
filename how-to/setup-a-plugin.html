@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>danoan.word_def.cli.utils module &mdash; word-def 0.1.0 documentation</title>
+  <title>How to setup a plugin &mdash; word-def 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=a3d76245" />
@@ -21,7 +21,9 @@
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How to test a plugin" href="test-a-plugin.html" />
+    <link rel="prev" title="How to create a word-def plugin" href="create-a-plugin.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,10 +51,10 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Getting started with Word Definition</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../how-to/create-a-plugin.html">How to create a word-def plugin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../how-to/setup-a-plugin.html">How to setup a plugin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../how-to/test-a-plugin.html">How to test a plugin</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="create-a-plugin.html">How to create a word-def plugin</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to setup a plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test-a-plugin.html">How to test a plugin</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api-reference.html">API Reference</a></li>
@@ -75,9 +77,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">danoan.word_def.cli.utils module</li>
+      <li class="breadcrumb-item active">How to setup a plugin</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/reference/danoan.word_def.cli.utils.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/how-to/setup-a-plugin.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -85,14 +87,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="danoan-word-def-cli-utils-module">
-<h1>danoan.word_def.cli.utils module<a class="headerlink" href="#danoan-word-def-cli-utils-module" title="Link to this heading"></a></h1>
+  <section id="how-to-setup-a-plugin">
+<h1>How to setup a plugin<a class="headerlink" href="#how-to-setup-a-plugin" title="Link to this heading"></a></h1>
+<p>After installing the word-def plugin, it is likely the case you
+should pass some values to configure it (e.g. API entrypoint and
+secret key).</p>
+<p>You can group the configuration of all your plugins in a single toml
+file and then pass it to the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> cli.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>word-def<span class="w"> </span>--plugin-configuration-filepath<span class="w"> </span>plugin-config.toml<span class="w"> </span>get-definition<span class="w"> </span>happiness<span class="w"> </span>eng
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> cli will select a plugin for the specified language and then gather its configuration
+from the <code class="docutils literal notranslate"><span class="pre">plugin-config.toml</span></code>. The <code class="docutils literal notranslate"><span class="pre">plugin-config.toml</span></code> should look to something similar to:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[</span><span class="s2">&quot;danoan.word_def.plugins.modules.&lt;MY_PLUGIN_MODULE&gt;&quot;</span><span class="k">]</span>
+<span class="n">config_key</span><span class="o">=</span><span class="err">config</span><span class="mi">_</span><span class="n">value</span>
+
+<span class="k">[</span><span class="s2">&quot;danoan.word_def.plugins.modules.&lt;MY_PLUGIN_MODULE_2&gt;&quot;</span><span class="k">]</span>
+<span class="n">config_key</span><span class="o">=</span><span class="err">config</span><span class="mi">_</span><span class="n">value</span>
+</pre></div>
+</div>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="create-a-plugin.html" class="btn btn-neutral float-left" title="How to create a word-def plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="test-a-plugin.html" class="btn btn-neutral float-right" title="How to test a plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

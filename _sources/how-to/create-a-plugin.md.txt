@@ -17,15 +17,21 @@ An example of implementation is given below:
 
 ```python
 class AdapterFactory:
+    def version(self) -> str:
+        return importlib.metadata.version("my-package-name")
+
     def get_language(self) -> str:
         return pycountry.languages.get(name="english").alpha_3
 
-    def get_adapter(self, configuration_stream: Optional[TextIO] = None) -> Adapter:
+    def get_adapter(
+        self, configuration_stream: Optional[TextIO] = None
+    ) -> PluginProtocol:
         if configuration_stream is None:
             raise exception.ConfigurationFileRequiredError()
 
         configuration = Configuration(**toml.load(configuration_stream))
         return Adapter(configuration)
+
 ```
 
 The `get_adapter` method is responsible to instantiate a class that is an implementation
@@ -39,9 +45,6 @@ from importlib.metadata import version
 class Adapter:
     def __init__(self, configuration: Configuration):
         self.configuration = configuration
-
-    def version(self):
-        version("my-plugin-package-name")
 
     def get_definition(self, word: str) -> Sequence[str]:
         response = collins_api.get_best_matching(

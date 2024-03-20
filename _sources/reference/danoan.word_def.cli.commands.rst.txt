@@ -11,5 +11,5 @@ Submodules
 
    danoan.word_def.cli.commands.get_definition
    danoan.word_def.cli.commands.get_pos_tag
-   danoan.word_def.cli.commands.get_synonyme
+   danoan.word_def.cli.commands.get_synonym
    danoan.word_def.cli.commands.get_usage_examples

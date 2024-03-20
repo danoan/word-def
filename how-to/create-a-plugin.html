@@ -22,7 +22,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API Reference" href="../api-reference.html" />
+    <link rel="next" title="How to setup a plugin" href="setup-a-plugin.html" />
     <link rel="prev" title="Getting started with Word Definition" href="../getting-started.html" /> 
 </head>
 
@@ -57,6 +57,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#plugin-installation">Plugin installation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="setup-a-plugin.html">How to setup a plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test-a-plugin.html">How to test a plugin</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api-reference.html">API Reference</a></li>
@@ -103,15 +105,21 @@ this namespace will be considered as a plugin module by <code class="docutils li
 itself must be an implementation of the <a class="reference internal" href="../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocol</span></a>.</p>
 <p>An example of implementation is given below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AdapterFactory</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="s2">&quot;my-package-name&quot;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">get_language</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alpha_3</span>
 
-    <span class="k">def</span> <span class="nf">get_adapter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Adapter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_adapter</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PluginProtocol</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">configuration_stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">exception</span><span class="o">.</span><span class="n">ConfigurationFileRequiredError</span><span class="p">()</span>
 
         <span class="n">configuration</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">(</span><span class="o">**</span><span class="n">toml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">configuration_stream</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">Adapter</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">get_adapter</span></code> method is responsible to instantiate a class that is an implementation
@@ -122,9 +130,6 @@ of the <a class="reference internal" href="../reference/danoan.word_def.core.mod
 <span class="k">class</span> <span class="nc">Adapter</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">:</span> <span class="n">Configuration</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span> <span class="o">=</span> <span class="n">configuration</span>
-
-    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">version</span><span class="p">(</span><span class="s2">&quot;my-plugin-package-name&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">collins_api</span><span class="o">.</span><span class="n">get_best_matching</span><span class="p">(</span>
@@ -177,7 +182,7 @@ install the plugin as a python package.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../getting-started.html" class="btn btn-neutral float-left" title="Getting started with Word Definition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../api-reference.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="setup-a-plugin.html" class="btn btn-neutral float-right" title="How to setup a plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -52,6 +52,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../how-to/create-a-plugin.html">How to create a word-def plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/setup-a-plugin.html">How to setup a plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/test-a-plugin.html">How to test a plugin</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api-reference.html">API Reference</a></li>
@@ -151,9 +153,9 @@
         <span class="o">...</span></div>
 
 
-<div class="viewcode-block" id="PluginProtocol.get_synonyme">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_synonyme">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_synonyme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="PluginProtocol.get_synonym">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_synonym">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_synonym</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raises:</span>
 <span class="sd">           UnexpectedResponseError if status code of request is different from 200.</span>
@@ -162,9 +164,9 @@
         <span class="o">...</span></div>
 
 
-<div class="viewcode-block" id="PluginProtocol.get_usage_examples">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_usage_examples">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_usage_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="PluginProtocol.get_usage_example">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_usage_example">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_usage_example</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raises:</span>
 <span class="sd">           UnexpectedResponseError if status code of request is different from 200.</span>
@@ -194,7 +196,7 @@
 <a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory.get_language">[docs]</a>
     <span class="k">def</span> <span class="nf">get_language</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the language IETF 639-3 code.</span>
+<span class="sd">        Get the language IETF 639-3 code. An empty string means multilanguage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 

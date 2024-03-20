@@ -52,6 +52,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../how-to/create-a-plugin.html">How to create a word-def plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/setup-a-plugin.html">How to setup a plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/test-a-plugin.html">How to test a plugin</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api-reference.html">API Reference</a></li>
@@ -96,7 +98,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">pkgutil</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TextIO</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">TextIO</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
@@ -114,6 +116,32 @@
         <span class="k">return</span> <span class="n">instances</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="bp">cls</span>
+
+
+<span class="k">class</span> <span class="nc">_MultilanguageWrapper</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is used to wrap Multilanguages plugins at running time.</span>
+
+<span class="sd">    The goal of this class is to create a version of the multilanguage adapter</span>
+<span class="sd">    for the language requested by the user. It calls the exactly same methods</span>
+<span class="sd">    of base_factory, except for the get_language, which is overwritten.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_factory</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">PluginFactory</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_factory</span> <span class="o">=</span> <span class="n">base_factory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">language</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_factory</span><span class="o">.</span><span class="n">get_language</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_language</span>
+
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_factory</span><span class="o">.</span><span class="n">version</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_language</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span>
+
+    <span class="k">def</span> <span class="nf">get_adapter</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">model</span><span class="o">.</span><span class="n">PluginProtocol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_factory</span><span class="o">.</span><span class="n">get_adapter</span><span class="p">(</span><span class="n">configuration_stream</span><span class="p">)</span>
 
 
 <span class="nd">@_singleton</span>
@@ -164,10 +192,22 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a list of registered adapters for the requested language.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">language_code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">languages_available</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">plugins_for_language</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">language_code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">languages_available</span><span class="p">:</span>
+            <span class="n">plugins_for_language</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">[</span><span class="n">language_code</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">[</span><span class="n">language_code</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">languages_available</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">multi_lang_plugin</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]:</span>
+                <span class="n">specific_language_factory</span> <span class="o">=</span> <span class="n">_MultilanguageWrapper</span><span class="p">(</span>
+                    <span class="n">multi_lang_plugin</span><span class="o">.</span><span class="n">adapter_factory</span><span class="p">,</span> <span class="n">language_code</span>
+                <span class="p">)</span>
+                <span class="n">plugins_for_language</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">model</span><span class="o">.</span><span class="n">Plugin</span><span class="p">(</span>
+                        <span class="n">multi_lang_plugin</span><span class="o">.</span><span class="n">package_name</span><span class="p">,</span> <span class="n">specific_language_factory</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">plugins_for_language</span>
 
 
 <span class="k">def</span> <span class="nf">_get_plugin_by_index</span><span class="p">(</span><span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Plugin</span><span class="p">]:</span>
@@ -323,28 +363,28 @@
 
 
 
-<div class="viewcode-block" id="get_synonyme">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.get_synonyme">[docs]</a>
-<span class="nd">@_check_missing_implementation</span><span class="p">(</span><span class="s2">&quot;get_synonyme&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_synonyme</span><span class="p">(</span>
+<div class="viewcode-block" id="get_synonym">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.get_synonym">[docs]</a>
+<span class="nd">@_check_missing_implementation</span><span class="p">(</span><span class="s2">&quot;get_synonym&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_synonym</span><span class="p">(</span>
     <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">plugin_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get a list of synonymes to the given word.</span>
+<span class="sd">    Get a list of synonyms to the given word.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plugin</span> <span class="o">=</span> <span class="n">_get_plugin</span><span class="p">(</span><span class="n">language_code</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">)</span>
     <span class="n">adapter</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">adapter_factory</span><span class="o">.</span><span class="n">get_adapter</span><span class="p">(</span><span class="n">configuration_stream</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get_synonyme</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get_synonym</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="get_usage_examples">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.get_usage_examples">[docs]</a>
-<span class="nd">@_check_missing_implementation</span><span class="p">(</span><span class="s2">&quot;get_usage_examples&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_usage_examples</span><span class="p">(</span>
+<div class="viewcode-block" id="get_usage_example">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.get_usage_example">[docs]</a>
+<span class="nd">@_check_missing_implementation</span><span class="p">(</span><span class="s2">&quot;get_usage_example&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_usage_example</span><span class="p">(</span>
     <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">language_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">plugin_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -355,7 +395,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plugin</span> <span class="o">=</span> <span class="n">_get_plugin</span><span class="p">(</span><span class="n">language_code</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">)</span>
     <span class="n">adapter</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">adapter_factory</span><span class="o">.</span><span class="n">get_adapter</span><span class="p">(</span><span class="n">configuration_stream</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get_usage_examples</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">adapter</span><span class="o">.</span><span class="n">get_usage_example</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
 
 </pre></div>
 

@@ -51,6 +51,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../how-to/create-a-plugin.html">How to create a word-def plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/setup-a-plugin.html">How to setup a plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/test-a-plugin.html">How to test a plugin</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api-reference.html">API Reference</a></li>
@@ -134,7 +136,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="danoan.word_def.core.model.PluginFactory.get_language">
 <span class="sig-name descname"><span class="pre">get_language</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/danoan/word_def/core/model.html#PluginFactory.get_language"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danoan.word_def.core.model.PluginFactory.get_language" title="Link to this definition"></a></dt>
-<dd><p>Get the language IETF 639-3 code.</p>
+<dd><p>Get the language IETF 639-3 code. An empty string means multilanguage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
@@ -193,8 +195,8 @@ compatible with a word-def package version if that major component is the same.<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="danoan.word_def.core.model.PluginProtocol.get_synonyme">
-<span class="sig-name descname"><span class="pre">get_synonyme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/danoan/word_def/core/model.html#PluginProtocol.get_synonyme"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danoan.word_def.core.model.PluginProtocol.get_synonyme" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="danoan.word_def.core.model.PluginProtocol.get_synonym">
+<span class="sig-name descname"><span class="pre">get_synonym</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/danoan/word_def/core/model.html#PluginProtocol.get_synonym"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danoan.word_def.core.model.PluginProtocol.get_synonym" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>UnexpectedResponseError if status code</strong><strong> of </strong><strong>request is different from 200.</strong> – </p>
@@ -209,8 +211,8 @@ compatible with a word-def package version if that major component is the same.<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="danoan.word_def.core.model.PluginProtocol.get_usage_examples">
-<span class="sig-name descname"><span class="pre">get_usage_examples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/danoan/word_def/core/model.html#PluginProtocol.get_usage_examples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danoan.word_def.core.model.PluginProtocol.get_usage_examples" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="danoan.word_def.core.model.PluginProtocol.get_usage_example">
+<span class="sig-name descname"><span class="pre">get_usage_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/danoan/word_def/core/model.html#PluginProtocol.get_usage_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danoan.word_def.core.model.PluginProtocol.get_usage_example" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>UnexpectedResponseError if status code</strong><strong> of </strong><strong>request is different from 200.</strong> – </p>
