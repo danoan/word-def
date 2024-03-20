@@ -23,7 +23,7 @@ pipx install word-def
 ## Features
 
 - `get-definition`
-- `get-synonyme`
+- `get-synonym`
 - `get-pos-tag`
 - `get-usage-examples`
 
