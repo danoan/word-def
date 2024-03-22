@@ -20,7 +20,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["beautifulsoup4"]
+dependencies = []
 
 [project.urls]
 Documentation = "https://github.com/danoan/word-def#readme"
