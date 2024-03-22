@@ -107,6 +107,9 @@ class _PluginRegister:
         if language_code in self.languages_available:
             plugins_for_language = self.plugin_register[language_code]
 
+        if language_code == "":
+            return plugins_for_language
+
         if "" in self.languages_available:
             for multi_lang_plugin in self.plugin_register[""]:
                 specific_language_factory = _MultilanguageWrapper(
@@ -190,6 +193,9 @@ class PluginRegister:
 
     def __init__(self, plugin_register: _PluginRegister):
         self._plugin_register = plugin_register
+
+    def get_languages_available(self) -> List[str]:
+        return list(self._plugin_register.languages_available)
 
     def get_language_plugins(self, language_code: str) -> List[model.Plugin]:
         """
