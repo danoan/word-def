@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -16,9 +16,9 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=938c9ccc"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b1f64a84"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
         <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
         <script>mermaid.initialize({startOnLoad:true});</script>
     <script src="_static/js/theme.js"></script>
@@ -130,9 +130,9 @@
            <div itemprop="articleBody">
              
   <section id="design-and-architecture">
-<h1>Design and Architecture<a class="headerlink" href="#design-and-architecture" title="Link to this heading"></a></h1>
+<h1>Design and Architecture<a class="headerlink" href="#design-and-architecture" title="Permalink to this heading"></a></h1>
 <section id="system-architecture">
-<h2>System architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<h2>System architecture<a class="headerlink" href="#system-architecture" title="Permalink to this heading"></a></h2>
 <p>In the diagram below, the <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code> is virtual. The two
 classes declared within it are protocols that are actually declared
 in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
@@ -181,15 +181,15 @@ in the <code class="docutils literal notranslate"><span class="pre">word-def</sp
 
         </div></section>
 <section id="design-notes">
-<h2>Design Notes<a class="headerlink" href="#design-notes" title="Link to this heading"></a></h2>
+<h2>Design Notes<a class="headerlink" href="#design-notes" title="Permalink to this heading"></a></h2>
 <p>This document lists the design and architectural decisions taken
 during the development of Word Definition. It follows
 the <a class="reference external" href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions.html">Architecture Decisions</a> format.</p>
 <section id="plugin-architecture">
-<h3>Plugin architecture<a class="headerlink" href="#plugin-architecture" title="Link to this heading"></a></h3>
+<h3>Plugin architecture<a class="headerlink" href="#plugin-architecture" title="Permalink to this heading"></a></h3>
 <p><strong>Date: (2024-02-02)</strong></p>
 <section id="context">
-<h4>Context<a class="headerlink" href="#context" title="Link to this heading"></a></h4>
+<h4>Context<a class="headerlink" href="#context" title="Permalink to this heading"></a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> contains the backbones of a plugin architecture. The <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
 package defines the protocols to be implemented by plugins.</p>
 <ol class="arabic simple">
@@ -211,15 +211,15 @@ it is the case with regular inheritance and abstract classes).</p>
 a <code class="docutils literal notranslate"><span class="pre">cli</span></code>. A plugin is installed as any other python package.</p>
 </section>
 <section id="decision">
-<h4>Decision<a class="headerlink" href="#decision" title="Link to this heading"></a></h4>
+<h4>Decision<a class="headerlink" href="#decision" title="Permalink to this heading"></a></h4>
 <p>Use plugin architecture to inject functionalities to <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
 </section>
 <section id="status">
-<h4>Status<a class="headerlink" href="#status" title="Link to this heading"></a></h4>
+<h4>Status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h4>
 <p>Done.</p>
 </section>
 <section id="consequences">
-<h4>Consequences<a class="headerlink" href="#consequences" title="Link to this heading"></a></h4>
+<h4>Consequences<a class="headerlink" href="#consequences" title="Permalink to this heading"></a></h4>
 <p>Creation of interfaces:</p>
 <ol class="arabic simple">
 <li><p>Plugin</p></li>
@@ -228,10 +228,10 @@ a <code class="docutils literal notranslate"><span class="pre">cli</span></code>
 </section>
 </section>
 <section id="protocols-instead-of-abstract-classes">
-<h3>Protocols instead of Abstract Classes<a class="headerlink" href="#protocols-instead-of-abstract-classes" title="Link to this heading"></a></h3>
+<h3>Protocols instead of Abstract Classes<a class="headerlink" href="#protocols-instead-of-abstract-classes" title="Permalink to this heading"></a></h3>
 <p><strong>Date: (2024-02-19)</strong></p>
 <section id="id1">
-<h4>Context<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<h4>Context<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
 <p>A plugin is a python module that must have two classes:</p>
 <ol class="arabic simple">
 <li><p>One should implement the <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> protocol.</p></li>
@@ -259,22 +259,22 @@ protocols documented.</p>
 </div>
 </section>
 <section id="id2">
-<h4>Decision<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<h4>Decision<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
 <p>Implement <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> and <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> as protocol.</p>
 </section>
 <section id="id3">
-<h4>Status<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<h4>Status<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
 <p>Done.</p>
 </section>
 <section id="id4">
-<h4>Consequences<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<h4>Consequences<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
 <section id="reduce-of-maintenance-burden">
-<h5>Reduce of maintenance burden<a class="headerlink" href="#reduce-of-maintenance-burden" title="Link to this heading"></a></h5>
+<h5>Reduce of maintenance burden<a class="headerlink" href="#reduce-of-maintenance-burden" title="Permalink to this heading"></a></h5>
 <p>We don’t need to create a <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code> package anymore. The
 protocols would be declared in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
 </section>
 <section id="plugins-depends-on-word-def-package">
-<h5>Plugins depends on <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package<a class="headerlink" href="#plugins-depends-on-word-def-package" title="Link to this heading"></a></h5>
+<h5>Plugins depends on <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package<a class="headerlink" href="#plugins-depends-on-word-def-package" title="Permalink to this heading"></a></h5>
 <p>At first glance it could sound weird that the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package, that
 is extended by plugins, it itself a dependence of plugins. But that
 does not pose a problem.</p>
@@ -312,10 +312,10 @@ PluginFactory protocol specifies the method <code class="docutils literal notran
 </section>
 </section>
 <section id="plugin-register-mechanism">
-<h3>Plugin register mechanism<a class="headerlink" href="#plugin-register-mechanism" title="Link to this heading"></a></h3>
+<h3>Plugin register mechanism<a class="headerlink" href="#plugin-register-mechanism" title="Permalink to this heading"></a></h3>
 <p><strong>Date: (2024-03-01)</strong></p>
 <section id="id5">
-<h4>Context<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<h4>Context<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h4>
 <p>We need a mechanism to register plugins such that <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
 can automatically identify and load these plugins at runtime.</p>
 <p><strong>Using a decorator</strong></p>
@@ -376,24 +376,24 @@ only install the plugin package to have access to its functionalities.</p>
 in a fixed namespace.</p>
 </section>
 <section id="id6">
-<h4>Decision<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<h4>Decision<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h4>
 <p>Use package introspection and python import system mechanism via importlib
 to implement the plugin mechanism in <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
 </section>
 <section id="id7">
-<h4>Status<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<h4>Status<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h4>
 <p>Done.</p>
 </section>
 <section id="id8">
-<h4>Consequences<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<h4>Consequences<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h4>
 <p>Plugin packages must be created within the namespace <code class="docutils literal notranslate"><span class="pre">danoan.word_def.modules.plugins</span></code>.</p>
 </section>
 </section>
 <section id="testing-the-plugin-register-mechanism">
-<h3>Testing the plugin register mechanism<a class="headerlink" href="#testing-the-plugin-register-mechanism" title="Link to this heading"></a></h3>
+<h3>Testing the plugin register mechanism<a class="headerlink" href="#testing-the-plugin-register-mechanism" title="Permalink to this heading"></a></h3>
 <p><strong>Date: (2024-03-02)</strong></p>
 <section id="id9">
-<h4>Context<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<h4>Context<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h4>
 <p>The plugin mechanism is designed to search and load modules in a given namespace. To
 test this mechanism we need to make the python import system to believe that is
 a fake_test_plugin python module in such namespace.</p>
@@ -432,23 +432,23 @@ emulate the namespace at runtime in the python import system.</p>
 </div>
 </section>
 <section id="id10">
-<h4>Decision<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<h4>Decision<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h4>
 <p>Wrap test functions around context manager to emulate the plugins namespace.</p>
 </section>
 <section id="id11">
-<h4>Status<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<h4>Status<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h4>
 <p>Done.</p>
 </section>
 <section id="id12">
-<h4>Consequences<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<h4>Consequences<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h4>
 <p>None.</p>
 </section>
 </section>
 <section id="multi-language-plugins-register-mechanism">
-<h3>Multi-language plugins register mechanism<a class="headerlink" href="#multi-language-plugins-register-mechanism" title="Link to this heading"></a></h3>
+<h3>Multi-language plugins register mechanism<a class="headerlink" href="#multi-language-plugins-register-mechanism" title="Permalink to this heading"></a></h3>
 <p><strong>Date: (2024-03-15)</strong></p>
 <section id="id13">
-<h4>Context<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<h4>Context<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h4>
 <p>Originally, plugins were designed to be exclusive to a certain language. An English
 plugin would only respond to queries regarding the English language.</p>
 <p>However, the <code class="docutils literal notranslate"><span class="pre">word-def-plugin-multilanguage-chatgpt</span></code> can handle several languages at
@@ -465,7 +465,7 @@ such that the calls of every method of the multilanguage factory is preserved, e
 <code class="docutils literal notranslate"><span class="pre">get_language</span></code>, which is replaced by the language specified by the user.</p>
 </section>
 <section id="id14">
-<h4>Decision<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<h4>Decision<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>Allow multilanguage plugins.</p></li>
 <li><p>The empty string as return value of <code class="docutils literal notranslate"><span class="pre">get_method</span></code> indicates a multilanguage plugin.</p></li>
@@ -474,11 +474,11 @@ appropriately.</p></li>
 </ul>
 </section>
 <section id="id15">
-<h4>Status<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<h4>Status<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h4>
 <p>Done.</p>
 </section>
 <section id="id16">
-<h4>Consequences<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<h4>Consequences<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h4>
 <p>None.</p>
 </section>
 </section>

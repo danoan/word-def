@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -16,9 +16,9 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=938c9ccc"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b1f64a84"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -97,12 +97,12 @@
            <div itemprop="articleBody">
              
   <section id="getting-started-with-word-definition">
-<h1>Getting started with Word Definition<a class="headerlink" href="#getting-started-with-word-definition" title="Link to this heading"></a></h1>
+<h1>Getting started with Word Definition<a class="headerlink" href="#getting-started-with-word-definition" title="Permalink to this heading"></a></h1>
 <p>Get definition of words in any language.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package is an extensible library to get definition of words
 in any language. It can be used as a library or as a command-line interface.</p>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># As a library</span>
 pip<span class="w"> </span>install<span class="w"> </span>word-def
 
@@ -111,14 +111,14 @@ pipx<span class="w"> </span>install<span class="w"> </span>word-def
 </pre></div>
 </div>
 <section id="plugins-available">
-<h3>Plugins available<a class="headerlink" href="#plugins-available" title="Link to this heading"></a></h3>
+<h3>Plugins available<a class="headerlink" href="#plugins-available" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/danoan/word-def-plugin-english-collins/">Collins Dictionary English</a></p></li>
 </ul>
 </section>
 </section>
 <section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">get-definition</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">get-synonym</span></code></p></li>
@@ -127,7 +127,7 @@ pipx<span class="w"> </span>install<span class="w"> </span>word-def
 </ul>
 </section>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>word-def<span class="w"> </span>get-definition<span class="w"> </span>joy<span class="w"> </span>eng
 <span class="m">1</span>.<span class="w"> </span>a<span class="w"> </span>deep<span class="w"> </span>feeling<span class="w"> </span>or<span class="w"> </span>condition<span class="w"> </span>of<span class="w"> </span>happiness<span class="w"> </span>or<span class="w"> </span>contentment
 <span class="m">2</span>.<span class="w"> </span>something<span class="w"> </span>causing<span class="w"> </span>such<span class="w"> </span>a<span class="w"> </span>feeling<span class="p">;</span><span class="w"> </span>a<span class="w"> </span><span class="nb">source</span><span class="w"> </span>of<span class="w"> </span>happiness
@@ -139,10 +139,10 @@ pipx<span class="w"> </span>install<span class="w"> </span>word-def
 <p>You may need to specify a plugin configuration file if the plugin
 requires extra parameters (e.g. credentials to access an API). You
 can register such parameters in a toml file and pass it to <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="err">&lt;!</span><span class="n">--</span><span class="w"> </span><span class="n">plugin-config</span><span class="p">.</span><span class="n">toml</span><span class="w"> </span><span class="n">--</span><span class="err">&gt;</span>
-<span class="k">[</span><span class="s2">&quot;danoan.word_def.plugins.modules.english_collins&quot;</span><span class="k">]</span>
-<span class="n">entrypoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&lt;ENTRYPOINT&gt;</span>
-<span class="n">secret_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&lt;SECRET</span><span class="mi">_</span><span class="n">KEY</span><span class="err">&gt;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span>&lt;!-- plugin-config.toml --&gt;
+[&quot;danoan.word_def.plugins.modules.english_collins&quot;]
+entrypoint = &lt;ENTRYPOINT&gt;
+secret_key = &lt;SECRET_KEY&gt;
 </pre></div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>word-def<span class="w"> </span>--plugin-configuration-filepath<span class="w"> </span>plugin-config.toml<span class="w"> </span>get-definition<span class="w"> </span>joy<span class="w"> </span>eng
@@ -150,7 +150,7 @@ can register such parameters in a toml file and pass it to <code class="docutils
 </div>
 </section>
 <section id="contributing">
-<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading"></a></h2>
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading"></a></h2>
 <p>Please reference to our <a class="reference external" href="http://danoan.github.io/word-def/contributing">contribution</a> and <a class="reference external" href="http://danoan.github.io/word-def/code-of-conduct">code-of-conduct</a> guidelines.</p>
 </section>
 </section>

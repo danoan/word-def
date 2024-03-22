@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../../">
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,9 +15,9 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=938c9ccc"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=b1f64a84"></script>
         <script src="../../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
         <script>mermaid.initialize({startOnLoad:true});</script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -97,9 +97,7 @@
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
 
-<div class="viewcode-block" id="PosTag">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PosTag">[docs]</a>
-<span class="k">class</span> <span class="nc">PosTag</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="PosTag"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PosTag">[docs]</a><span class="k">class</span> <span class="nc">PosTag</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Part-of-speech tags as defined in: https://universaldependencies.org/u/pos/all.html</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -127,13 +125,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
 
 
-
-<div class="viewcode-block" id="PluginProtocol">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol">[docs]</a>
-<span class="k">class</span> <span class="nc">PluginProtocol</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
-<div class="viewcode-block" id="PluginProtocol.get_definition">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_definition">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="PluginProtocol"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol">[docs]</a><span class="k">class</span> <span class="nc">PluginProtocol</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginProtocol.get_definition"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_definition">[docs]</a>    <span class="k">def</span> <span class="nf">get_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raises:</span>
 <span class="sd">           UnexpectedResponseError if status code of request is different from 200.</span>
@@ -141,10 +134,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-
-<div class="viewcode-block" id="PluginProtocol.get_pos_tag">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_pos_tag">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_pos_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PosTag</span><span class="p">]:</span>
+<div class="viewcode-block" id="PluginProtocol.get_pos_tag"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_pos_tag">[docs]</a>    <span class="k">def</span> <span class="nf">get_pos_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PosTag</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get part-of-speech tag of the given word.</span>
 
@@ -152,10 +142,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-
-<div class="viewcode-block" id="PluginProtocol.get_synonym">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_synonym">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_synonym</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="PluginProtocol.get_synonym"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_synonym">[docs]</a>    <span class="k">def</span> <span class="nf">get_synonym</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raises:</span>
 <span class="sd">           UnexpectedResponseError if status code of request is different from 200.</span>
@@ -163,26 +150,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-
-<div class="viewcode-block" id="PluginProtocol.get_usage_example">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_usage_example">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_usage_example</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="PluginProtocol.get_usage_example"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol.get_usage_example">[docs]</a>    <span class="k">def</span> <span class="nf">get_usage_example</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raises:</span>
 <span class="sd">           UnexpectedResponseError if status code of request is different from 200.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="o">...</span></div>
-</div>
+        <span class="o">...</span></div></div>
 
 
-
-<div class="viewcode-block" id="PluginFactory">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory">[docs]</a>
-<span class="k">class</span> <span class="nc">PluginFactory</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
-<div class="viewcode-block" id="PluginFactory.version">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory.version">[docs]</a>
-    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="PluginFactory"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory">[docs]</a><span class="k">class</span> <span class="nc">PluginFactory</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginFactory.version"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory.version">[docs]</a>    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the version of the plugin.</span>
 
@@ -191,19 +169,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-
-<div class="viewcode-block" id="PluginFactory.get_language">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory.get_language">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_language</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="PluginFactory.get_language"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory.get_language">[docs]</a>    <span class="k">def</span> <span class="nf">get_language</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the language IETF 639-3 code. An empty string means multilanguage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-
-<div class="viewcode-block" id="PluginFactory.get_adapter">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory.get_adapter">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_adapter</span><span class="p">(</span>
+<div class="viewcode-block" id="PluginFactory.get_adapter"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory.get_adapter">[docs]</a>    <span class="k">def</span> <span class="nf">get_adapter</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PluginProtocol</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -213,18 +185,13 @@
 <span class="sd">           ConfigurationFileRequiredError if api needs configurations settings but a toml configuration file is not passed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="o">...</span></div>
-</div>
+        <span class="o">...</span></div></div>
 
 
-
-<div class="viewcode-block" id="Plugin">
-<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.Plugin">[docs]</a>
-<span class="nd">@dataclass</span>
+<div class="viewcode-block" id="Plugin"><a class="viewcode-back" href="../../../../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.Plugin">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Plugin</span><span class="p">:</span>
     <span class="n">package_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">adapter_factory</span><span class="p">:</span> <span class="n">PluginFactory</span></div>
-
 </pre></div>
 
            </div>

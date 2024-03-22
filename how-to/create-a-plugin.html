@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -16,9 +16,9 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b1f64a84"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -92,12 +92,12 @@
            <div itemprop="articleBody">
              
   <section id="how-to-create-a-word-def-plugin">
-<h1>How to create a word-def plugin<a class="headerlink" href="#how-to-create-a-word-def-plugin" title="Link to this heading"></a></h1>
+<h1>How to create a word-def plugin<a class="headerlink" href="#how-to-create-a-word-def-plugin" title="Permalink to this heading"></a></h1>
 <p>A <code class="docutils literal notranslate"><span class="pre">word-def</span></code> plugin is a python package that follows the protocols
 defined by <code class="docutils literal notranslate"><span class="pre">word-def</span></code>. It is how we extend the features of <code class="docutils literal notranslate"><span class="pre">word-def</span></code>,
 for example, adding support to another language.</p>
 <section id="the-word-def-protocol">
-<h2>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> protocol<a class="headerlink" href="#the-word-def-protocol" title="Link to this heading"></a></h2>
+<h2>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> protocol<a class="headerlink" href="#the-word-def-protocol" title="Permalink to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> recognizes as plugins modules that are registered under
 the namespace: <code class="docutils literal notranslate"><span class="pre">danoan.word-def.plugins.modules</span></code>. All modules within
 this namespace will be considered as a plugin module by <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
@@ -167,7 +167,7 @@ be found at <a class="reference internal" href="../design-and-architecture.html"
 </div>
 </section>
 <section id="plugin-installation">
-<h2>Plugin installation<a class="headerlink" href="#plugin-installation" title="Link to this heading"></a></h2>
+<h2>Plugin installation<a class="headerlink" href="#plugin-installation" title="Permalink to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> will try to register all modules within the namespace:
 <code class="docutils literal notranslate"><span class="pre">danoan.word-def.plugins.modules</span></code>. Therefore, it is sufficient to
 install the plugin as a python package.</p>

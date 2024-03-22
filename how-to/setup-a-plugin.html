@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -16,9 +16,9 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b1f64a84"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -88,7 +88,7 @@
            <div itemprop="articleBody">
              
   <section id="how-to-setup-a-plugin">
-<h1>How to setup a plugin<a class="headerlink" href="#how-to-setup-a-plugin" title="Link to this heading"></a></h1>
+<h1>How to setup a plugin<a class="headerlink" href="#how-to-setup-a-plugin" title="Permalink to this heading"></a></h1>
 <p>After installing the word-def plugin, it is likely the case you
 should pass some values to configure it (e.g. API entrypoint and
 secret key).</p>
@@ -99,11 +99,11 @@ file and then pass it to the <code class="docutils literal notranslate"><span cl
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> cli will select a plugin for the specified language and then gather its configuration
 from the <code class="docutils literal notranslate"><span class="pre">plugin-config.toml</span></code>. The <code class="docutils literal notranslate"><span class="pre">plugin-config.toml</span></code> should look to something similar to:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[</span><span class="s2">&quot;danoan.word_def.plugins.modules.&lt;MY_PLUGIN_MODULE&gt;&quot;</span><span class="k">]</span>
-<span class="n">config_key</span><span class="o">=</span><span class="err">config</span><span class="mi">_</span><span class="n">value</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span>[&quot;danoan.word_def.plugins.modules.&lt;MY_PLUGIN_MODULE&gt;&quot;]
+config_key=config_value
 
-<span class="k">[</span><span class="s2">&quot;danoan.word_def.plugins.modules.&lt;MY_PLUGIN_MODULE_2&gt;&quot;</span><span class="k">]</span>
-<span class="n">config_key</span><span class="o">=</span><span class="err">config</span><span class="mi">_</span><span class="n">value</span>
+[&quot;danoan.word_def.plugins.modules.&lt;MY_PLUGIN_MODULE_2&gt;&quot;]
+config_key=config_value
 </pre></div>
 </div>
 </section>
