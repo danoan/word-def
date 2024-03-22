@@ -196,6 +196,9 @@
         <span class="k">if</span> <span class="n">language_code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">languages_available</span><span class="p">:</span>
             <span class="n">plugins_for_language</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">[</span><span class="n">language_code</span><span class="p">]</span>
 
+        <span class="k">if</span> <span class="n">language_code</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">plugins_for_language</span>
+
         <span class="k">if</span> <span class="s2">&quot;&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">languages_available</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">multi_lang_plugin</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_register</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]:</span>
                 <span class="n">specific_language_factory</span> <span class="o">=</span> <span class="n">_MultilanguageWrapper</span><span class="p">(</span>
@@ -281,6 +284,12 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_register</span><span class="p">:</span> <span class="n">_PluginRegister</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_register</span> <span class="o">=</span> <span class="n">plugin_register</span>
+
+<div class="viewcode-block" id="PluginRegister.get_languages_available">
+<a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.PluginRegister.get_languages_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_languages_available</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plugin_register</span><span class="o">.</span><span class="n">languages_available</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="PluginRegister.get_language_plugins">
 <a class="viewcode-back" href="../../../../reference/danoan.word_def.core.api.html#danoan.word_def.core.api.PluginRegister.get_language_plugins">[docs]</a>

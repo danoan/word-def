@@ -1,0 +1,7 @@
+danoan.word\_def.cli.commands.list\_dictionaries module
+=======================================================
+
+.. automodule:: danoan.word_def.cli.commands.list_dictionaries
+   :members:
+   :undoc-members:
+   :show-inheritance:
