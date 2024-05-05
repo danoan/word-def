@@ -26,7 +26,7 @@ def _singleton(cls):
             instances[cls] = cls(*args, **kwargs)
         return instances[cls]
 
-    return cls
+    return get_instance
 
 
 class _MultilanguageWrapper:
@@ -64,8 +64,6 @@ class _PluginRegister:
     installed word-def plugins package.
     """
 
-    PLUGINS_NAMESPACE = "danoan.word_def.plugins.modules"
-
     def __init__(self):
         self.plugin_register: T_Register = {}
         self.languages_available = set()
@@ -93,9 +91,10 @@ class _PluginRegister:
         Collect all modules found in the word-def plugin namespace.
         """
         # TODO: Consider using LazyLoader
-        plugins_module = importlib.import_module(_PluginRegister.PLUGINS_NAMESPACE)
+        PLUGINS_NAMESPACE = "danoan.word_def.plugins.modules"
+        plugins_module = importlib.import_module(PLUGINS_NAMESPACE)
         for module_info in pkgutil.iter_modules(
-            plugins_module.__path__, prefix=f"{_PluginRegister.PLUGINS_NAMESPACE}."
+            plugins_module.__path__, prefix=f"{PLUGINS_NAMESPACE}."
         ):
             yield importlib.import_module(module_info.name), module_info.name
 
