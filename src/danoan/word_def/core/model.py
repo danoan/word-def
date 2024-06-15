@@ -41,6 +41,7 @@ class PluginProtocol(Protocol):
         """
         Raises:
            UnexpectedResponseError if status code of request is different from 200.
+           PluginInternalError: wraps any error that occurs in the plugin internals.
 
         """
         ...
@@ -50,6 +51,10 @@ class PluginProtocol(Protocol):
         Get part-of-speech tag of the given word.
 
         The first tag correspond to the first entry in the dictionary.
+
+        Raises:
+           UnexpectedResponseError if status code of request is different from 200.
+           PluginInternalError: wraps any error that occurs in the plugin internals.
         """
         ...
 
@@ -57,6 +62,7 @@ class PluginProtocol(Protocol):
         """
         Raises:
            UnexpectedResponseError if status code of request is different from 200.
+           PluginInternalError: wraps any error that occurs in the plugin internals.
 
         """
         ...
@@ -65,6 +71,7 @@ class PluginProtocol(Protocol):
         """
         Raises:
            UnexpectedResponseError if status code of request is different from 200.
+           PluginInternalError: wraps any error that occurs in the plugin internals.
 
         """
         ...

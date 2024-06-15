@@ -27,3 +27,7 @@ class PluginMethodNotImplementedError(Exception):
 
 class UnrecognizedPluginModule(Exception):
     pass
+
+
+class PluginInternalError(Exception):
+    pass
