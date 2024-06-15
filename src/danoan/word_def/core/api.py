@@ -154,7 +154,6 @@ def _get_plugin(language_code: str, plugin_name: Optional[str] = None) -> model.
         PluginNotAvailableError: If there is no plugin registered for the requested language.
         ConfigurationFileRequiredError: If the language adapter needs a configuration file but the latter was not given.
     """
-
     if plugin_name:
         plugin = _get_plugin_by_name(language_code, plugin_name)
     else:

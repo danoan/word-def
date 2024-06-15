@@ -25,7 +25,7 @@ def __get_usage_example__(
     list_of_usage_examples = []
     try:
         list_of_usage_examples = api.get_usage_example(
-            word, language_code, configuration_stream=ss
+            word, language_code, plugin_name=plugin_name, configuration_stream=ss
         )
     except exception.ConfigurationFileRequiredError:
         print(utils.configuration_file_required_error_message())

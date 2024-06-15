@@ -24,7 +24,9 @@ def __get_pos_tag__(
 
     list_of_pos_tags = []
     try:
-        list_of_pos_tags = api.get_pos_tag(word, language_code, configuration_stream=ss)
+        list_of_pos_tags = api.get_pos_tag(
+            word, language_code, plugin_name=plugin_name, configuration_stream=ss
+        )
     except exception.ConfigurationFileRequiredError:
         print(utils.configuration_file_required_error_message())
     except exception.PluginNotAvailableError:

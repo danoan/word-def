@@ -25,7 +25,7 @@ def __get_definition__(
     list_of_definitions = []
     try:
         list_of_definitions = api.get_definition(
-            word, language_code, configuration_stream=ss
+            word, language_code, plugin_name=plugin_name, configuration_stream=ss
         )
     except exception.ConfigurationFileRequiredError:
         print(utils.configuration_file_required_error_message())
