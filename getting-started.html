@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,20 +7,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Getting started with Word Definition &mdash; word-def 0.2.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=a3d76245" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b1f64a84"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b1f64a84"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,9 +35,6 @@
           <a href="index.html" class="icon icon-home">
             word-def
           </a>
-              <div class="version">
-                0.2.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -100,7 +95,7 @@
 <h1>Getting started with Word Definition<a class="headerlink" href="#getting-started-with-word-definition" title="Permalink to this heading"></a></h1>
 <p>Get definition of words in any language.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package is an extensible library to get definition of words
-in any language. It can be used as a library or as a command-line interface.</p>
+in any language. It can be used either as a library or through a command-line interface (CLI).</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># As a library</span>
@@ -114,6 +109,7 @@ pipx<span class="w"> </span>install<span class="w"> </span>word-def
 <h3>Plugins available<a class="headerlink" href="#plugins-available" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/danoan/word-def-plugin-english-collins/">Collins Dictionary English</a></p></li>
+<li><p><a class="reference external" href="https://github.com/danoan/word-def-plugin-multilanguage-chatgpt">Multi-language dictionary</a></p></li>
 </ul>
 </section>
 </section>
@@ -129,6 +125,7 @@ pipx<span class="w"> </span>install<span class="w"> </span>word-def
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>word-def<span class="w"> </span>get-definition<span class="w"> </span>joy<span class="w"> </span>eng
+
 <span class="m">1</span>.<span class="w"> </span>a<span class="w"> </span>deep<span class="w"> </span>feeling<span class="w"> </span>or<span class="w"> </span>condition<span class="w"> </span>of<span class="w"> </span>happiness<span class="w"> </span>or<span class="w"> </span>contentment
 <span class="m">2</span>.<span class="w"> </span>something<span class="w"> </span>causing<span class="w"> </span>such<span class="w"> </span>a<span class="w"> </span>feeling<span class="p">;</span><span class="w"> </span>a<span class="w"> </span><span class="nb">source</span><span class="w"> </span>of<span class="w"> </span>happiness
 <span class="m">3</span>.<span class="w"> </span>an<span class="w"> </span>outward<span class="w"> </span>show<span class="w"> </span>of<span class="w"> </span>pleasure<span class="w"> </span>or<span class="w"> </span>delight<span class="p">;</span><span class="w"> </span>rejoicing
@@ -138,7 +135,7 @@ pipx<span class="w"> </span>install<span class="w"> </span>word-def
 </div>
 <p>You may need to specify a plugin configuration file if the plugin
 requires extra parameters (e.g. credentials to access an API). You
-can register such parameters in a toml file and pass it to <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
+can register these parameters in a TOML file and pass it to <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span>&lt;!-- plugin-config.toml --&gt;
 [&quot;danoan.word_def.plugins.modules.english_collins&quot;]
 entrypoint = &lt;ENTRYPOINT&gt;

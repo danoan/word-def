@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,22 +7,24 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Design and Architecture &mdash; word-def 0.2.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=a3d76245" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b1f64a84"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
-        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
-        <script>mermaid.initialize({startOnLoad:true});</script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b1f64a84"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -38,9 +42,6 @@
           <a href="index.html" class="icon icon-home">
             word-def
           </a>
-              <div class="version">
-                0.2.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -133,11 +134,10 @@
 <h1>Design and Architecture<a class="headerlink" href="#design-and-architecture" title="Permalink to this heading"></a></h1>
 <section id="system-architecture">
 <h2>System architecture<a class="headerlink" href="#system-architecture" title="Permalink to this heading"></a></h2>
-<p>In the diagram below, the <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code> is virtual. The two
-classes declared within it are protocols that are actually declared
-in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
-<div class="mermaid">
-            classDiagram
+<p>In the diagram below, the <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code> is a virtual namespace. The two
+classes contained within it are protocols defined in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
+<pre  class="mermaid">
+        classDiagram
     namespace word-def-plugin-core{
         class Plugin
         class PluginFactory
@@ -179,7 +179,7 @@ in the <code class="docutils literal notranslate"><span class="pre">word-def</sp
     get_definition -- Adapter_en
     get_definition -- Adapter_it
 
-        </div></section>
+    </pre></section>
 <section id="design-notes">
 <h2>Design Notes<a class="headerlink" href="#design-notes" title="Permalink to this heading"></a></h2>
 <p>This document lists the design and architectural decisions taken
@@ -190,29 +190,29 @@ the <a class="reference external" href="https://cognitect.com/blog/2011/11/15/do
 <p><strong>Date: (2024-02-02)</strong></p>
 <section id="context">
 <h4>Context<a class="headerlink" href="#context" title="Permalink to this heading"></a></h4>
-<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> contains the backbones of a plugin architecture. The <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
+<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package contains the backbone of a plugin architecture. The <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
 package defines the protocols to be implemented by plugins.</p>
 <ol class="arabic simple">
 <li><p>Plugin</p></li>
 <li><p>PluginFactory</p></li>
 </ol>
-<p>The entry point for plugins is the class <code class="docutils literal notranslate"><span class="pre">AdapterFactory</span></code> which every plugin
-must define. This class follows the <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocol and its goal is
-to instantiate <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> implementations and provide an interface to its
+<p>The entry point for plugins is the <code class="docutils literal notranslate"><span class="pre">AdapterFactory</span></code> class, which every plugin
+must define. This class follows the <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocol, and its goal is
+to instantiate implementations of <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> and provide an interface to their
 metadata.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> plugin register will try to load as a plugin all python modules
-installed at <code class="docutils literal notranslate"><span class="pre">danoan.word_def.plugins.modules</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> plugin register will attempt to load any Python modules
+installed at <code class="docutils literal notranslate"><span class="pre">danoan.word_def.plugins.modules</span></code> as plugins.</p>
 <div class="admonition-protocol-enforcement admonition">
 <p class="admonition-title">Protocol enforcement</p>
-<p><code class="docutils literal notranslate"><span class="pre">word-def</span></code> uses python Protocols which do not enforce <code class="docutils literal notranslate"><span class="pre">is-a</span></code> relations (as
+<p><code class="docutils literal notranslate"><span class="pre">word-def</span></code> uses Python protocols, which do not enforce <code class="docutils literal notranslate"><span class="pre">is-a</span></code> relationships (as
 it is the case with regular inheritance and abstract classes).</p>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package can be used as a library, via the <code class="docutils literal notranslate"><span class="pre">api</span></code> module or via
-a <code class="docutils literal notranslate"><span class="pre">cli</span></code>. A plugin is installed as any other python package.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package can be used as a library via the <code class="docutils literal notranslate"><span class="pre">api</span></code> module or
+through a <code class="docutils literal notranslate"><span class="pre">cli</span></code>. A plugin is installed like any other python package.</p>
 </section>
 <section id="decision">
 <h4>Decision<a class="headerlink" href="#decision" title="Permalink to this heading"></a></h4>
-<p>Use plugin architecture to inject functionalities to <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
+<p>Use plugin architecture to inject functionalities into <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
 </section>
 <section id="status">
 <h4>Status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h4>
@@ -232,35 +232,35 @@ a <code class="docutils literal notranslate"><span class="pre">cli</span></code>
 <p><strong>Date: (2024-02-19)</strong></p>
 <section id="id1">
 <h4>Context<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
-<p>A plugin is a python module that must have two classes:</p>
+<p>A plugin is a Python module that must have two classes:</p>
 <ol class="arabic simple">
 <li><p>One should implement the <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> protocol.</p></li>
 <li><p>The second one should implement the <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocol.</p></li>
 </ol>
 <p>The use of protocols gives us a loosely coupled object compared with
 abstract classes and regular inheritance. The implementations above do
-not need to inherit from any class, and that removes a dependency.</p>
+not need to inherit from any class, removing a dependency.</p>
 <div class="admonition-abstract-class admonition">
 <p class="admonition-title">Abstract class</p>
-<p>If we use abstract classes we would have to create a package to hold
-the abstract classes, e.g. <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code>. Using protocols
-allows us to reduce the number of packages to maintain, since the
+<p>If we use abstract classes, we would have to create a package to hold
+the abstract classes (e.g. <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code>). Using protocols
+allows us to reduce the number of packages to maintain, as the
 protocols can be declared in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
 </div>
 <div class="admonition-why-to-declare-protocols admonition">
 <p class="admonition-title">Why to declare protocols?</p>
-<p>Since we do not have the enforcement during instantiation of classes
-derived from regular inheritance, why would someone use protocols? First
-because it participates of static type checking. If we are passing an
-object to a function that expects protocol <code class="docutils literal notranslate"><span class="pre">P</span></code> but the object do not
-implement it, this will raise an error. Second because we can take
+<p>Since we do not have enforcement during instantiation of classes
+derived from regular inheritance, why use protocols? First,
+because they participate in static type checking. If we pass an
+object to a function that expects protocol <code class="docutils literal notranslate"><span class="pre">P</span></code> but the object does not
+implement it, an error will be raised. Second, we can take
 advantage of automatic documentation generation from code to have the
 protocols documented.</p>
 </div>
 </section>
 <section id="id2">
 <h4>Decision<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
-<p>Implement <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> and <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> as protocol.</p>
+<p>Implement <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> and <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> as protocols.</p>
 </section>
 <section id="id3">
 <h4>Status<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
@@ -268,44 +268,40 @@ protocols documented.</p>
 </section>
 <section id="id4">
 <h4>Consequences<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
-<section id="reduce-of-maintenance-burden">
-<h5>Reduce of maintenance burden<a class="headerlink" href="#reduce-of-maintenance-burden" title="Permalink to this heading"></a></h5>
-<p>We don’t need to create a <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code> package anymore. The
-protocols would be declared in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
+<section id="reduced-maintenance-burden">
+<h5>Reduced maintenance burden<a class="headerlink" href="#reduced-maintenance-burden" title="Permalink to this heading"></a></h5>
+<p>We no longer need to create a <code class="docutils literal notranslate"><span class="pre">word-def-plugin-core</span></code> package. The
+protocols are declared in the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package.</p>
 </section>
-<section id="plugins-depends-on-word-def-package">
-<h5>Plugins depends on <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package<a class="headerlink" href="#plugins-depends-on-word-def-package" title="Permalink to this heading"></a></h5>
-<p>At first glance it could sound weird that the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package, that
-is extended by plugins, it itself a dependence of plugins. But that
-does not pose a problem.</p>
-<p>The plugins are registered at running time, so the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package
-is independent and could be installed without any plugins.</p>
-<p>There is one issue though. Let us assume there exist published plugins
-A and B. A new version of <code class="docutils literal notranslate"><span class="pre">word-def</span></code> comes out (v2.0). This version does
-some changes in the interface. The maintainer of Plugin A publishes a
-new version to comply with the changes. The maintainer of B does not.</p>
+<section id="plugins-depend-on-word-def-package">
+<h5>Plugins depend on <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package<a class="headerlink" href="#plugins-depend-on-word-def-package" title="Permalink to this heading"></a></h5>
+<p>At first glance, it may seem odd that the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package, witch
+is extended by plugins, it itself a dependency for its plugins. However,
+this does not pose a problem.</p>
+<p>Plugins are registered at running time, so the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package
+is independent and can be installed without any plugins.</p>
+<p>However, an issue arises if there are published plugins A and B:</p>
 <ul class="simple">
-<li><p>Plugin A uses word-def (v2.0)</p></li>
-<li><p>Plugin B uses word-def (v1.0)</p></li>
+<li><p>Plugin A uses <code class="docutils literal notranslate"><span class="pre">word-def</span></code> (v2.0)</p></li>
+<li><p>Plugin B uses <code class="docutils literal notranslate"><span class="pre">word-def</span></code> (v1.0)</p></li>
 </ul>
-<p>If in our machine we try to install the latest versions of both plugins,
-it won’t work because they have incompatible dependencies. The only
-scenario in which we could have both is to keep v1.0 of <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
+<p>If we try to install the latest versions of both plugins on the same machine,
+it won’t work because they have incompatible dependencies. The only way to have
+both plugins working would be to keep v1.0 of <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
 <div class="admonition-incompatible-dependency-issue admonition">
 <p class="admonition-title">Incompatible dependency issue</p>
-<p>This problem is also present in the design in which we have the <code class="docutils literal notranslate"><span class="pre">word-def-core</span></code>
+<p>This problem also exists in the design where we have the <code class="docutils literal notranslate"><span class="pre">word-def-core</span></code>
 package.</p>
 </div>
 <p>This is not ideal. We would like to have both plugins with their latest versions
 installed and if any issue appear, simply signalize to the user that that particular
 plugin cannot be used.</p>
-<p>To solve that issue, the plugins should not specify the version of <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
-from which they depend on and let the package install manager (e.g. pip) to
-handle that.</p>
+<p>To solve that issue, plugins should not specify the version of <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
+they depend on. Instead, the package manager (e.g. pip) will handle that.</p>
 <div class="admonition-checking-version-compatibility admonition">
 <p class="admonition-title">Checking version compatibility</p>
-<p>It is always possible to check the plugin version and the word-def version. The
-PluginFactory protocol specifies the method <code class="docutils literal notranslate"><span class="pre">version</span></code> and the api has the methods
+<p>It is always possible to check the plugin version and the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> version. The
+PluginFactory protocol specifies the method <code class="docutils literal notranslate"><span class="pre">version</span></code>, and the api has the methods
 <code class="docutils literal notranslate"><span class="pre">api_version</span></code> and <code class="docutils literal notranslate"><span class="pre">is_plugin_compatible</span></code> for that purpose.</p>
 </div>
 </section>
@@ -317,24 +313,24 @@ PluginFactory protocol specifies the method <code class="docutils literal notran
 <section id="id5">
 <h4>Context<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h4>
 <p>We need a mechanism to register plugins such that <code class="docutils literal notranslate"><span class="pre">word-def</span></code>
-can automatically identify and load these plugins at runtime.</p>
+can automatically identify and load them at runtime.</p>
 <p><strong>Using a decorator</strong></p>
-<p>The first solution though was to use a decorator and share the
+<p>The initial solution was to use a decorator and share the
 burden with the plugin creator. In this scenario, the plugin
-creator would have to add the decorator <code class="docutils literal notranslate"><span class="pre">&#64;register</span></code> above the
-<code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> class.</p>
+creator would have to add the <code class="docutils literal notranslate"><span class="pre">&#64;register</span></code> decorator to their
+implementation of the <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> class.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@model</span><span class="o">.</span><span class="n">register</span>
-<span class="k">class</span> <span class="nc">AdapterFactory</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AdapterFactory</span><span class="p">:</span>
     <span class="o">...</span>
 </pre></div>
 </div>
-<p>However, we still need a way to automatically load the plugin
+<p>However, we still needed a way to automatically load the plugin
 module at runtime. The second strategy allows us to do that
-without putting any burden at the plugin creator.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">singleton</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+without burdening the plugin creator.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">singleton</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
     <span class="n">instances</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_instance</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
             <span class="n">instances</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">instances</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span>
@@ -342,13 +338,13 @@ without putting any burden at the plugin creator.</p>
     <span class="k">return</span> <span class="n">get_instance</span>
 
 <span class="nd">@singleton</span>
-<span class="k">class</span> <span class="nc">_PluginRegister</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_PluginRegister</span><span class="p">:</span>
     <span class="o">...</span>
 
-<span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">T_AdapterFactory</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">T_AdapterFactory</span><span class="p">):</span>
     <span class="n">plugin_register</span> <span class="o">=</span> <span class="n">_PluginRegister</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">adapter_factory</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">plugin_register</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">adapter_factory</span><span class="p">)</span>
 
@@ -356,11 +352,9 @@ without putting any burden at the plugin creator.</p>
 </pre></div>
 </div>
 <p><strong>Fixed plugin namespace and package introspection</strong></p>
-<p>In this design the plugins are obliged to be within
-a fixed namespace. This namespace is <code class="docutils literal notranslate"><span class="pre">danoan.word_def.modules.plugins</span></code>.
-The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package can only identify and load python modules that
-are located within this namespace.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">collect_modules</span><span class="p">():</span>
+<p>In this design, plugins must be within a fixed namespace: <code class="docutils literal notranslate"><span class="pre">danoan.word_def.modules.plugins</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package can only identify and load Python modules located within this namespace.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">collect_modules</span><span class="p">():</span>
         <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;danoan.word_def.plugins.modules&quot;</span>
         <span class="n">plugins_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">module_info</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">(</span>
@@ -370,14 +364,14 @@ are located within this namespace.</p>
 
 </pre></div>
 </div>
-<p>The strongest point of this approach is automatic load. The user should
-only install the plugin package to have access to its functionalities.</p>
-<p>The drawback is the restriction to plugin creators to create their plugins
-in a fixed namespace.</p>
+<p>The strong point of this approach is automatic loading. To start using a plugin,
+the user only need to install the plugin package.</p>
+<p>The drawback is the restriction on plugin creators to create their plugins
+within a fixed namespace.</p>
 </section>
 <section id="id6">
 <h4>Decision<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h4>
-<p>Use package introspection and python import system mechanism via importlib
+<p>Use package introspection and Python import system mechanisms via <code class="docutils literal notranslate"><span class="pre">importlib</span></code>
 to implement the plugin mechanism in <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
 </section>
 <section id="id7">
@@ -395,16 +389,16 @@ to implement the plugin mechanism in <code class="docutils literal notranslate">
 <section id="id9">
 <h4>Context<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h4>
 <p>The plugin mechanism is designed to search and load modules in a given namespace. To
-test this mechanism we need to make the python import system to believe that is
-a fake_test_plugin python module in such namespace.</p>
-<p>Our solution is to create a decorator to wrap our test function around a context manager.
-Within the context manager we create a temporary directory <code class="docutils literal notranslate"><span class="pre">T</span></code> and the directories
-corresponding to our namespace. Finally, it is sufficient to add <code class="docutils literal notranslate"><span class="pre">T</span></code> to <code class="docutils literal notranslate"><span class="pre">sys.path</span></code> to
-emulate the namespace at runtime in the python import system.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plugin_context</span><span class="p">(</span><span class="n">plugins_location</span><span class="p">,</span> <span class="n">plugins_base_import_path</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+test this mechanism, we need to make the Python import system believe that there is
+a <code class="docutils literal notranslate"><span class="pre">fake_test_plugin</span></code> python module in that namespace.</p>
+<p>Our solution is to create a decorator that wraps the test function within a context manager.
+Within the context manager, we create a temporary directory <code class="docutils literal notranslate"><span class="pre">T</span></code> and the directories
+corresponding to our namespace. Finally, adding <code class="docutils literal notranslate"><span class="pre">T</span></code> to <code class="docutils literal notranslate"><span class="pre">sys.path</span></code> emulates the namespace at
+runtime in the Python import system.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plugin_context</span><span class="p">(</span><span class="n">plugins_location</span><span class="p">,</span> <span class="n">plugins_base_import_path</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tempdir</span><span class="p">)</span>
 
@@ -416,12 +410,12 @@ emulate the namespace at runtime in the python import system.</p>
     <span class="k">return</span> <span class="n">decorator</span>
 
 
-<span class="k">def</span> <span class="nf">test_plugin_register</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_plugin_register</span><span class="p">():</span>
     <span class="n">plugins_location</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">SCRIPT_FOLDER</span><span class="si">}</span><span class="s2">/input&quot;</span>
     <span class="n">plugins_base_import_path</span> <span class="o">=</span> <span class="s2">&quot;danoan.word_def.plugins.modules&quot;</span>
 
     <span class="nd">@plugin_context</span><span class="p">(</span><span class="n">plugins_location</span><span class="p">,</span> <span class="n">plugins_base_import_path</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">():</span>
         <span class="n">register</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_register</span><span class="p">()</span>
 
         <span class="n">language_plugins</span> <span class="o">=</span> <span class="n">register</span><span class="o">.</span><span class="n">get_language_plugins</span><span class="p">(</span><span class="s2">&quot;eng&quot;</span><span class="p">)</span>
@@ -433,7 +427,7 @@ emulate the namespace at runtime in the python import system.</p>
 </section>
 <section id="id10">
 <h4>Decision<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h4>
-<p>Wrap test functions around context manager to emulate the plugins namespace.</p>
+<p>Wrap test functions within a context manager to emulate the plugins namespace.</p>
 </section>
 <section id="id11">
 <h4>Status<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h4>
@@ -452,25 +446,25 @@ emulate the namespace at runtime in the python import system.</p>
 <p>Originally, plugins were designed to be exclusive to a certain language. An English
 plugin would only respond to queries regarding the English language.</p>
 <p>However, the <code class="docutils literal notranslate"><span class="pre">word-def-plugin-multilanguage-chatgpt</span></code> can handle several languages at
-once by simple mentioning the language in the prompt. The language in this case is
+once by simple mentioning the language in the prompt. The language, in this case, is
 a plugin parameter.</p>
-<p>We did not like to change the <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> neither the <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocols, therefore,
-we decided that multilanguage plugins will return an empty string for the <code class="docutils literal notranslate"><span class="pre">get_language</span></code>
-method and that it is up to the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> api to inform at runtime the language to which
-the multilanguage plugin should operate on.</p>
-<p>Every method of <code class="docutils literal notranslate"><span class="pre">word-def</span></code> API needs a language parameter. The language parameter is used
+<p>We did not want to change the <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> or <code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocols, so
+we decided that multi-language plugins will return an empty string for the <code class="docutils literal notranslate"><span class="pre">get_language</span></code>
+method and that it is up to the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> API to specify the language for the
+multi-language plugin at runtime.</p>
+<p>Every method of <code class="docutils literal notranslate"><span class="pre">word-def</span></code> API requires a language parameter. The language parameter is used
 to find an available plugin to execute the task in the given language. Whenever the plugin
-search is started, we make sure to wrap the multilanguage factory into a wrapper class
-such that the calls of every method of the multilanguage factory is preserved, except
-<code class="docutils literal notranslate"><span class="pre">get_language</span></code>, which is replaced by the language specified by the user.</p>
+search begins, ensure the multi-language factory is wrapped in a wrapper class. This class
+preserves the calls of every method of the multi-language factory, except
+<code class="docutils literal notranslate"><span class="pre">get_language</span></code>, which is replaced with the user-specified language.</p>
 </section>
 <section id="id14">
 <h4>Decision<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h4>
 <ul class="simple">
-<li><p>Allow multilanguage plugins.</p></li>
-<li><p>The empty string as return value of <code class="docutils literal notranslate"><span class="pre">get_method</span></code> indicates a multilanguage plugin.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">word-def</span></code> API wraps the multilanguage factory and overwrites the <code class="docutils literal notranslate"><span class="pre">get_language</span></code> method
-appropriately.</p></li>
+<li><p>Allow multi-language plugins.</p></li>
+<li><p>An empty string as return value of <code class="docutils literal notranslate"><span class="pre">get_method</span></code> indicates a multi-language plugin.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> API wraps the multi-language factory and overwrites the <code class="docutils literal notranslate"><span class="pre">get_language</span></code> method
+as needed.</p></li>
 </ul>
 </section>
 <section id="id15">

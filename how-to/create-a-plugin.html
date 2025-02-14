@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,20 +7,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>How to create a word-def plugin &mdash; word-def 0.2.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=a3d76245" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b1f64a84"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b1f64a84"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,9 +35,6 @@
           <a href="../index.html" class="icon icon-home">
             word-def
           </a>
-              <div class="version">
-                0.2.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -93,25 +88,25 @@
              
   <section id="how-to-create-a-word-def-plugin">
 <h1>How to create a word-def plugin<a class="headerlink" href="#how-to-create-a-word-def-plugin" title="Permalink to this heading"></a></h1>
-<p>A <code class="docutils literal notranslate"><span class="pre">word-def</span></code> plugin is a python package that follows the protocols
+<p>A <code class="docutils literal notranslate"><span class="pre">word-def</span></code> plugin is a Python package that follows the protocols
 defined by <code class="docutils literal notranslate"><span class="pre">word-def</span></code>. It is how we extend the features of <code class="docutils literal notranslate"><span class="pre">word-def</span></code>,
-for example, adding support to another language.</p>
+for example, by adding support for another language.</p>
 <section id="the-word-def-protocol">
 <h2>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> protocol<a class="headerlink" href="#the-word-def-protocol" title="Permalink to this heading"></a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> recognizes as plugins modules that are registered under
+<p><code class="docutils literal notranslate"><span class="pre">word-def</span></code> recognizes plugins modules as plugins if they are registered under
 the namespace: <code class="docutils literal notranslate"><span class="pre">danoan.word-def.plugins.modules</span></code>. All modules within
-this namespace will be considered as a plugin module by <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
-<p>A plugin module must implement a class named <code class="docutils literal notranslate"><span class="pre">AdapterFactory</span></code> which
+this namespace will be considered as a plugin modules by <code class="docutils literal notranslate"><span class="pre">word-def</span></code>.</p>
+<p>A plugin module must implement a class named <code class="docutils literal notranslate"><span class="pre">AdapterFactory</span></code>, which
 itself must be an implementation of the <a class="reference internal" href="../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginFactory"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">PluginFactory</span></code> protocol</span></a>.</p>
 <p>An example of implementation is given below:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AdapterFactory</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AdapterFactory</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="s2">&quot;my-package-name&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_language</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_language</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pycountry</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alpha_3</span>
 
-    <span class="k">def</span> <span class="nf">get_adapter</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_adapter</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">configuration_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PluginProtocol</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">configuration_stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -122,16 +117,16 @@ itself must be an implementation of the <a class="reference internal" href="../r
 
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">get_adapter</span></code> method is responsible to instantiate a class that is an implementation
-of the <a class="reference internal" href="../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">Plugin</span></code> protocol</span></a>.</p>
-<p>An example of implementation is given below:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">importlib.metadata</span> <span class="kn">import</span> <span class="n">version</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">get_adapter</span></code> method is responsible for instantiating a class that implements
+the <a class="reference internal" href="../reference/danoan.word_def.core.model.html#danoan.word_def.core.model.PluginProtocol"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">Plugin</span></code> protocol</span></a>.</p>
+<p>Here’s an example of such implementation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span>
 
-<span class="k">class</span> <span class="nc">Adapter</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">:</span> <span class="n">Configuration</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">:</span> <span class="n">Configuration</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span> <span class="o">=</span> <span class="n">configuration</span>
 
-    <span class="k">def</span> <span class="nf">get_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">collins_api</span><span class="o">.</span><span class="n">get_best_matching</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">entrypoint</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">secret_key</span><span class="p">,</span>
@@ -157,20 +152,20 @@ of the <a class="reference internal" href="../reference/danoan.word_def.core.mod
 </div>
 <div class="admonition-word-def-dependency admonition">
 <p class="admonition-title">word-def dependency</p>
-<p>During the creation of your plugin package, do not pin or specify any
+<p>When creating your plugin package, do not pin or specify any
 range for the version of the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> package. Let the package manager
-to resolve the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> dependency to get installed based on the
-installed plugins.</p>
-<p>Any errors related regarding a plugin version and <code class="docutils literal notranslate"><span class="pre">word-def</span></code> version
-are signalized by the time the plugin is used. More information can
-be found at <a class="reference internal" href="../design-and-architecture.html"><span class="std std-doc">Design and Architecture</span></a>.</p>
+resolve the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> dependency, installing the appropriate version based
+on the installed plugins.</p>
+<p>Any errors regarding a plugin and <code class="docutils literal notranslate"><span class="pre">word-def</span></code> version are signaled
+when the plugin is used. More information can be found at
+<a class="reference internal" href="../design-and-architecture.html"><span class="std std-doc">Design and Architecture</span></a>.</p>
 </div>
 </section>
 <section id="plugin-installation">
 <h2>Plugin installation<a class="headerlink" href="#plugin-installation" title="Permalink to this heading"></a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> will try to register all modules within the namespace:
+<p><code class="docutils literal notranslate"><span class="pre">word-def</span></code> will try to register all modules within the namespace:
 <code class="docutils literal notranslate"><span class="pre">danoan.word-def.plugins.modules</span></code>. Therefore, it is sufficient to
-install the plugin as a python package.</p>
+install the plugin as a Python package.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>word-def-plugin-myplugin
 </pre></div>
 </div>

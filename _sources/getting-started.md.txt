@@ -3,7 +3,7 @@
 Get definition of words in any language.
 
 The `word-def` package is an extensible library to get definition of words
-in any language. It can be used as a library or as a command-line interface.
+in any language. It can be used either as a library or through a command-line interface (CLI).
 
 ## Installation
 
@@ -18,6 +18,7 @@ pipx install word-def
 ### Plugins available
 
 - [Collins Dictionary English](https://github.com/danoan/word-def-plugin-english-collins/)
+- [Multi-language dictionary](https://github.com/danoan/word-def-plugin-multilanguage-chatgpt)
 
 
 ## Features
@@ -31,6 +32,7 @@ pipx install word-def
 
 ```bash
 $ word-def get-definition joy eng
+
 1. a deep feeling or condition of happiness or contentment
 2. something causing such a feeling; a source of happiness
 3. an outward show of pleasure or delight; rejoicing
@@ -40,7 +42,7 @@ $ word-def get-definition joy eng
 
 You may need to specify a plugin configuration file if the plugin
 requires extra parameters (e.g. credentials to access an API). You
-can register such parameters in a toml file and pass it to `word-def`.
+can register these parameters in a TOML file and pass it to `word-def`.
 
 ```toml
 <!-- plugin-config.toml -->

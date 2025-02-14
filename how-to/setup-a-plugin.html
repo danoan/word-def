@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,20 +7,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>How to setup a plugin &mdash; word-def 0.2.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=a3d76245" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b1f64a84"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b1f64a84"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,9 +35,6 @@
           <a href="../index.html" class="icon icon-home">
             word-def
           </a>
-              <div class="version">
-                0.2.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -89,16 +84,15 @@
              
   <section id="how-to-setup-a-plugin">
 <h1>How to setup a plugin<a class="headerlink" href="#how-to-setup-a-plugin" title="Permalink to this heading"></a></h1>
-<p>After installing the word-def plugin, it is likely the case you
-should pass some values to configure it (e.g. API entrypoint and
-secret key).</p>
-<p>You can group the configuration of all your plugins in a single toml
-file and then pass it to the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> cli.</p>
+<p>After installing the plugin, you may need to pass some configuration values
+(e.g. API entrypoint and secret key).</p>
+<p>You can group the configuration for all your plugins in a single configurationML
+file and then pass it to the <code class="docutils literal notranslate"><span class="pre">word-def</span></code> CLI.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>word-def<span class="w"> </span>--plugin-configuration-filepath<span class="w"> </span>plugin-config.toml<span class="w"> </span>get-definition<span class="w"> </span>happiness<span class="w"> </span>eng
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> cli will select a plugin for the specified language and then gather its configuration
-from the <code class="docutils literal notranslate"><span class="pre">plugin-config.toml</span></code>. The <code class="docutils literal notranslate"><span class="pre">plugin-config.toml</span></code> should look to something similar to:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">word-def</span></code> CLI will select a plugin for the specified language and gather its configuration
+from the <code class="docutils literal notranslate"><span class="pre">plugin-config.toml</span></code>. The <code class="docutils literal notranslate"><span class="pre">plugin-config.toml</span></code> should look something like this:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span>[&quot;danoan.word_def.plugins.modules.&lt;MY_PLUGIN_MODULE&gt;&quot;]
 config_key=config_value
 
