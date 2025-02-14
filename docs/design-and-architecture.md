@@ -2,9 +2,8 @@
 
 ## System architecture
 
-In the diagram below, the `word-def-plugin-core` is virtual. The two
-classes declared within it are protocols that are actually declared
-in the `word-def` package.
+In the diagram below, the `word-def-plugin-core` is a virtual namespace. The two
+classes contained within it are protocols defined in the `word-def` package.
 
 ```{mermaid}
 classDiagram
@@ -64,31 +63,31 @@ the [Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-a
 
 #### Context
 
-The `word-def` contains the backbones of a plugin architecture. The `word-def`
+The `word-def` package contains the backbone of a plugin architecture. The `word-def`
 package defines the protocols to be implemented by plugins.
 
 1. Plugin
 2. PluginFactory
 
-The entry point for plugins is the class `AdapterFactory` which every plugin
-must define. This class follows the `PluginFactory` protocol and its goal is
-to instantiate `Plugin` implementations and provide an interface to its
+The entry point for plugins is the `AdapterFactory` class, which every plugin
+must define. This class follows the `PluginFactory` protocol, and its goal is
+to instantiate implementations of `Plugin` and provide an interface to their
 metadata.
 
-The `word-def` plugin register will try to load as a plugin all python modules
-installed at `danoan.word_def.plugins.modules`.
+The `word-def` plugin register will attempt to load any Python modules
+installed at `danoan.word_def.plugins.modules` as plugins.
 
 ```{admonition} Protocol enforcement
-`word-def` uses python Protocols which do not enforce `is-a` relations (as
+`word-def` uses Python protocols, which do not enforce `is-a` relationships (as
 it is the case with regular inheritance and abstract classes).
 ```
 
-The `word-def` package can be used as a library, via the `api` module or via
-a `cli`. A plugin is installed as any other python package.
+The `word-def` package can be used as a library via the `api` module or
+through a `cli`. A plugin is installed like any other python package.
 
 #### Decision
 
-Use plugin architecture to inject functionalities to `word-def` package.
+Use plugin architecture to inject functionalities into `word-def` package.
 
 #### Status
 
@@ -109,35 +108,35 @@ Creation of interfaces:
 
 #### Context
 
-A plugin is a python module that must have two classes:
+A plugin is a Python module that must have two classes:
 
 1. One should implement the `Plugin` protocol.
 2. The second one should implement the `PluginFactory` protocol.
 
 The use of protocols gives us a loosely coupled object compared with
 abstract classes and regular inheritance. The implementations above do
-not need to inherit from any class, and that removes a dependency.
+not need to inherit from any class, removing a dependency.
 
 ```{admonition} Abstract class
-If we use abstract classes we would have to create a package to hold
-the abstract classes, e.g. `word-def-plugin-core`. Using protocols
-allows us to reduce the number of packages to maintain, since the
+If we use abstract classes, we would have to create a package to hold
+the abstract classes (e.g. `word-def-plugin-core`). Using protocols
+allows us to reduce the number of packages to maintain, as the
 protocols can be declared in the `word-def` package.
 ```
 
 ```{admonition} Why to declare protocols?
-Since we do not have the enforcement during instantiation of classes
-derived from regular inheritance, why would someone use protocols? First
-because it participates of static type checking. If we are passing an
-object to a function that expects protocol `P` but the object do not
-implement it, this will raise an error. Second because we can take
+Since we do not have enforcement during instantiation of classes
+derived from regular inheritance, why use protocols? First,
+because they participate in static type checking. If we pass an
+object to a function that expects protocol `P` but the object does not
+implement it, an error will be raised. Second, we can take
 advantage of automatic documentation generation from code to have the
 protocols documented.
 ```
 
 #### Decision
 
-Implement `Plugin` and `PluginFactory` as protocol.
+Implement `Plugin` and `PluginFactory` as protocols.
 
 #### Status
 
@@ -145,34 +144,31 @@ Done.
 
 #### Consequences
 
-##### Reduce of maintenance burden
+##### Reduced maintenance burden
 
-We don't need to create a `word-def-plugin-core` package anymore. The
-protocols would be declared in the `word-def` package.
+We no longer need to create a `word-def-plugin-core` package. The
+protocols are declared in the `word-def` package.
 
-##### Plugins depends on `word-def` package
+##### Plugins depend on `word-def` package
 
-At first glance it could sound weird that the `word-def` package, that
-is extended by plugins, it itself a dependence of plugins. But that
-does not pose a problem.
+At first glance, it may seem odd that the `word-def` package, witch
+is extended by plugins, it itself a dependency for its plugins. However,
+this does not pose a problem.
 
-The plugins are registered at running time, so the `word-def` package
-is independent and could be installed without any plugins.
+Plugins are registered at running time, so the `word-def` package
+is independent and can be installed without any plugins.
 
-There is one issue though. Let us assume there exist published plugins
-A and B. A new version of `word-def` comes out (v2.0). This version does
-some changes in the interface. The maintainer of Plugin A publishes a
-new version to comply with the changes. The maintainer of B does not.
+However, an issue arises if there are published plugins A and B:
 
-- Plugin A uses word-def (v2.0)
-- Plugin B uses word-def (v1.0)
+- Plugin A uses `word-def` (v2.0)
+- Plugin B uses `word-def` (v1.0)
 
-If in our machine we try to install the latest versions of both plugins,
-it won't work because they have incompatible dependencies. The only
-scenario in which we could have both is to keep v1.0 of `word-def`.
+If we try to install the latest versions of both plugins on the same machine,
+it won't work because they have incompatible dependencies. The only way to have
+both plugins working would be to keep v1.0 of `word-def`.
 
 ```{admonition} Incompatible dependency issue
-This problem is also present in the design in which we have the `word-def-core`
+This problem also exists in the design where we have the `word-def-core`
 package.
 ```
 
@@ -180,13 +176,12 @@ This is not ideal. We would like to have both plugins with their latest versions
 installed and if any issue appear, simply signalize to the user that that particular
 plugin cannot be used.
 
-To solve that issue, the plugins should not specify the version of `word-def`
-from which they depend on and let the package install manager (e.g. pip) to
-handle that.
+To solve that issue, plugins should not specify the version of `word-def`
+they depend on. Instead, the package manager (e.g. pip) will handle that.
 
 ```{admonition} Checking version compatibility
-It is always possible to check the plugin version and the word-def version. The
-PluginFactory protocol specifies the method `version` and the api has the methods
+It is always possible to check the plugin version and the `word-def` version. The
+PluginFactory protocol specifies the method `version`, and the api has the methods
 `api_version` and `is_plugin_compatible` for that purpose.
 ```
 
@@ -199,14 +194,14 @@ PluginFactory protocol specifies the method `version` and the api has the method
 #### Context
 
 We need a mechanism to register plugins such that `word-def`
-can automatically identify and load these plugins at runtime.
+can automatically identify and load them at runtime.
 
 **Using a decorator**
 
-The first solution though was to use a decorator and share the
+The initial solution was to use a decorator and share the
 burden with the plugin creator. In this scenario, the plugin
-creator would have to add the decorator `@register` above the
-`PluginFactory` class.
+creator would have to add the `@register` decorator to their
+implementation of the `PluginFactory` class.
 
 ```python
 @model.register
@@ -214,9 +209,9 @@ class AdapterFactory:
     ...
 ```
 
-However, we still need a way to automatically load the plugin
+However, we still needed a way to automatically load the plugin
 module at runtime. The second strategy allows us to do that
-without putting any burden at the plugin creator.
+without burdening the plugin creator.
 
 ```python
 def singleton(cls):
@@ -245,10 +240,8 @@ def register(cls: T_AdapterFactory):
 
 **Fixed plugin namespace and package introspection**
 
-In this design the plugins are obliged to be within
-a fixed namespace. This namespace is `danoan.word_def.modules.plugins`.
-The `word-def` package can only identify and load python modules that
-are located within this namespace.
+In this design, plugins must be within a fixed namespace: `danoan.word_def.modules.plugins`.
+The `word-def` package can only identify and load Python modules located within this namespace.
 
 ```python
 def collect_modules():
@@ -261,15 +254,15 @@ def collect_modules():
 
 ```
 
-The strongest point of this approach is automatic load. The user should
-only install the plugin package to have access to its functionalities.
+The strong point of this approach is automatic loading. To start using a plugin,
+the user only need to install the plugin package.
 
-The drawback is the restriction to plugin creators to create their plugins
-in a fixed namespace.
+The drawback is the restriction on plugin creators to create their plugins
+within a fixed namespace.
 
 #### Decision
 
-Use package introspection and python import system mechanism via importlib
+Use package introspection and Python import system mechanisms via `importlib`
 to implement the plugin mechanism in `word-def`.
 
 #### Status
@@ -288,13 +281,13 @@ Plugin packages must be created within the namespace `danoan.word_def.modules.pl
 #### Context
 
 The plugin mechanism is designed to search and load modules in a given namespace. To
-test this mechanism we need to make the python import system to believe that is
-a fake_test_plugin python module in such namespace.
+test this mechanism, we need to make the Python import system believe that there is
+a `fake_test_plugin` python module in that namespace.
 
-Our solution is to create a decorator to wrap our test function around a context manager.
-Within the context manager we create a temporary directory `T` and the directories
-corresponding to our namespace. Finally, it is sufficient to add `T` to `sys.path` to
-emulate the namespace at runtime in the python import system.
+Our solution is to create a decorator that wraps the test function within a context manager.
+Within the context manager, we create a temporary directory `T` and the directories
+corresponding to our namespace. Finally, adding `T` to `sys.path` emulates the namespace at
+runtime in the Python import system.
 
 ```python
 def plugin_context(plugins_location, plugins_base_import_path):
@@ -328,7 +321,7 @@ def test_plugin_register():
 
 #### Decision
 
-Wrap test functions around context manager to emulate the plugins namespace.
+Wrap test functions within a context manager to emulate the plugins namespace.
 
 #### Status
 
@@ -348,27 +341,27 @@ Originally, plugins were designed to be exclusive to a certain language. An Engl
 plugin would only respond to queries regarding the English language.
 
 However, the `word-def-plugin-multilanguage-chatgpt` can handle several languages at
-once by simple mentioning the language in the prompt. The language in this case is
+once by simple mentioning the language in the prompt. The language, in this case, is
 a plugin parameter.
 
-We did not like to change the `Plugin` neither the `PluginFactory` protocols, therefore,
-we decided that multilanguage plugins will return an empty string for the `get_language`
-method and that it is up to the `word-def` api to inform at runtime the language to which
-the multilanguage plugin should operate on.
+We did not want to change the `Plugin` or `PluginFactory` protocols, so
+we decided that multi-language plugins will return an empty string for the `get_language`
+method and that it is up to the `word-def` API to specify the language for the
+multi-language plugin at runtime.
 
-Every method of `word-def` API needs a language parameter. The language parameter is used
+Every method of `word-def` API requires a language parameter. The language parameter is used
 to find an available plugin to execute the task in the given language. Whenever the plugin
-search is started, we make sure to wrap the multilanguage factory into a wrapper class
-such that the calls of every method of the multilanguage factory is preserved, except
-`get_language`, which is replaced by the language specified by the user.
+search begins, ensure the multi-language factory is wrapped in a wrapper class. This class
+preserves the calls of every method of the multi-language factory, except
+`get_language`, which is replaced with the user-specified language.
 
 
 #### Decision
 
-- Allow multilanguage plugins.
-- The empty string as return value of `get_method` indicates a multilanguage plugin.
-- `word-def` API wraps the multilanguage factory and overwrites the `get_language` method
-  appropriately.
+- Allow multi-language plugins.
+- An empty string as return value of `get_method` indicates a multi-language plugin.
+- The `word-def` API wraps the multi-language factory and overwrites the `get_language` method
+  as needed.
 
 #### Status
 

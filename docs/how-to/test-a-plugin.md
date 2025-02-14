@@ -1,17 +1,17 @@
 # How to test a plugin
 
 A `word-def` plugin depends on the `word-def` package itself, which makes
-very convenient to locally test your plugin in a interactive python
+it very convenient to locally test your plugin in a interactive pythonn
 session or by creating unit tests.
 
 ## Recommended unit tests
 
-We recommend to create the following unit tests:
+We recommend creating the following unit tests for your plugin:
 
 ### Plugin language test
 
 Make sure that your plugin is returning a valid IETF 639-3 language code
-or the empty string in the case your plugin is multilanguage.
+or an empty string if your plugin is multi-language.
 
 ```python
 def test_language():
@@ -22,7 +22,7 @@ def test_language():
 
 ### Protocol compatibility
 
-Make sure that your plugin is compatible with the version of `word-def`
+Ensure that your plugin is compatible with the version of `word-def`
 it depends on.
 
 ```python
@@ -37,10 +37,10 @@ def test_plugin_compatibility():
 
 ### API response handlers
 
-It is often the case that plugins will call third-party packages or make
+It is common for plugins to call third-party packages or make
 API calls to base theirs responses on. It is a good idea to separate the
-method that does the API call and the one that prepares the response.
+method that does the API call from the one that prepares the response.
 
-We suggest them to create regular unit tests for the response handler and
+We suggest creating regular unit tests for the response handler and
 integration tests (run in a regular basis, e.g. every two weeks) for the
 API calls.
